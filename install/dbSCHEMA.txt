@@ -1,0 +1,2333 @@
+--
+create database dbo;
+use dbo;
+-- Estrutura da tabela `accounts`
+--
+
+CREATE TABLE `accounts` (
+  `id` int(11) NOT NULL,
+  `name` varchar(32) NOT NULL DEFAULT '',
+  `password` varchar(255) NOT NULL,
+  `salt` varchar(40) NOT NULL DEFAULT '',
+  `premdays` int(11) NOT NULL DEFAULT '0',
+  `lastday` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `email` varchar(255) NOT NULL DEFAULT '',
+  `key` varchar(128) NOT NULL DEFAULT '',
+  `blocked` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'internal usage',
+  `warnings` int(11) NOT NULL DEFAULT '0',
+  `group_id` int(11) NOT NULL DEFAULT '1',
+  `page_lastday` int(11) NOT NULL,
+  `created` int(11) NOT NULL DEFAULT '0',
+  `rlname` varchar(255) NOT NULL DEFAULT '',
+  `location` varchar(255) NOT NULL DEFAULT '',
+  `page_access` int(11) NOT NULL DEFAULT '0',
+  `premium_points` int(11) NOT NULL DEFAULT '0',
+  `nickname` char(48) DEFAULT NULL,
+  `avatar` char(48) DEFAULT NULL,
+  `about_me` text,
+  `backup_points` int(11) NOT NULL DEFAULT '0',
+  `vip_time` int(15) NOT NULL DEFAULT '0',
+  `email_new_time` int(15) NOT NULL,
+  `next_email` int(11) NOT NULL DEFAULT '0',
+  `vote` int(11) NOT NULL DEFAULT '0',
+  `last_post` int(11) NOT NULL DEFAULT '0',
+  `flag` varchar(255) NOT NULL,
+  `email_code` varchar(255) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `name`, `password`, `salt`, `premdays`, `lastday`, `email`, `key`, `blocked`, `warnings`, `group_id`, `page_lastday`, `created`, `rlname`, `location`, `page_access`, `premium_points`, `nickname`, `avatar`, `about_me`, `backup_points`, `vip_time`, `email_new_time`, `next_email`, `vote`, `last_post`, `flag`, `email_code`) VALUES
+(1, '1', '1', '', 0, 1553140657, 'accountmanager@hotmail.com', '', 0, 0, 1, 0, 0, '', '', 0, 0, 'Account Manager', NULL, NULL, 0, 0, 0, 0, 0, 0, '', '0'),
+(2, '2', '356a192b7913b04c54574d18c28d46e6395428ab', '', 0, 1553140657, 'yan_zorde@hotmail.com', '', 0, 0, 1, 0, 0, 'Yan Liima', 'Wodbo Wars Online Brasil', 6, 0, 'Yan liima', '1437124545_thumb.jpg', '-------------Informação-------------\r\nSou sub dono do WodboWars, Não fique me amolando ou levara ban :-)', 0, 0, 0, 0, 0, 0, '', '0');
+
+--
+-- Acionadores `accounts`
+--
+DELIMITER $$
+CREATE TRIGGER `ondelete_accounts` BEFORE DELETE ON `accounts` FOR EACH ROW BEGIN
+        DELETE FROM `bans` WHERE `type` IN (3, 4) AND `value` = OLD.`id`;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `account_viplist`
+--
+
+CREATE TABLE `account_viplist` (
+  `account_id` int(11) NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `player_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `bans`
+--
+
+CREATE TABLE `bans` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `type` tinyint(1) NOT NULL COMMENT '1 - ip banishment, 2 - namelock, 3 - account banishment, 4 - notation, 5 - deletion',
+  `value` int(10) UNSIGNED NOT NULL COMMENT 'ip address (integer), player guid or account number',
+  `param` int(10) UNSIGNED NOT NULL DEFAULT '4294967295' COMMENT 'used only for ip banishment mask (integer)',
+  `active` tinyint(1) NOT NULL DEFAULT '1',
+  `expires` int(11) NOT NULL,
+  `reason` int(10) NOT NULL DEFAULT '0',
+  `added` int(10) UNSIGNED NOT NULL,
+  `admin_id` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `comment` text NOT NULL,
+  `action` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `statement` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `bugtracker`
+--
+
+CREATE TABLE `bugtracker` (
+  `id` int(11) NOT NULL,
+  `category` int(3) NOT NULL,
+  `time` int(11) DEFAULT NULL,
+  `author` int(11) NOT NULL,
+  `text` text,
+  `title` varchar(120) DEFAULT NULL,
+  `done` tinyint(3) DEFAULT NULL,
+  `priority` tinyint(3) DEFAULT NULL,
+  `closed` tinyint(1) DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` int(11) NOT NULL,
+  `news_id` int(11) DEFAULT NULL,
+  `body` text,
+  `time` int(11) DEFAULT '0',
+  `author` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `deaths_in_wars`
+--
+
+CREATE TABLE `deaths_in_wars` (
+  `guild_id` int(11) NOT NULL,
+  `player_id` int(11) NOT NULL,
+  `killer_guild` int(11) NOT NULL,
+  `killer` int(11) NOT NULL,
+  `date` int(11) NOT NULL,
+  `result1` int(11) NOT NULL,
+  `result2` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `environment_killers`
+--
+
+CREATE TABLE `environment_killers` (
+  `kill_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `forums`
+--
+
+CREATE TABLE `forums` (
+  `id` int(11) NOT NULL,
+  `name` varchar(120) DEFAULT NULL,
+  `description` tinytext,
+  `access` smallint(5) DEFAULT '1' COMMENT 'Min. access to see the board',
+  `closed` tinyint(1) DEFAULT NULL,
+  `moderators` tinytext,
+  `order` int(6) DEFAULT NULL,
+  `requireLogin` tinyint(1) DEFAULT NULL,
+  `guild` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `friends`
+--
+
+CREATE TABLE `friends` (
+  `id` int(11) NOT NULL,
+  `with` int(11) DEFAULT NULL,
+  `friend` int(11) DEFAULT NULL,
+  `time` int(11) DEFAULT NULL,
+  `active` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `global_storage`
+--
+
+CREATE TABLE `global_storage` (
+  `key` varchar(32) NOT NULL DEFAULT '0',
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `value` varchar(255) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `guilds`
+--
+
+CREATE TABLE `guilds` (
+  `id` int(11) NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL,
+  `ownerid` int(11) NOT NULL,
+  `creationdata` int(11) NOT NULL,
+  `checkdata` int(11) NOT NULL,
+  `motd` varchar(255) NOT NULL,
+  `balance` bigint(20) UNSIGNED NOT NULL,
+  `description` text NOT NULL,
+  `logo_gfx_name` varchar(255) NOT NULL DEFAULT '',
+  `invited_to` int(11) NOT NULL,
+  `invited_by` int(11) NOT NULL,
+  `in_war_with` int(11) NOT NULL,
+  `kills` int(11) NOT NULL,
+  `show` smallint(1) NOT NULL,
+  `war_time` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Acionadores `guilds`
+--
+DELIMITER $$
+CREATE TRIGGER `oncreate_guilds` AFTER INSERT ON `guilds` FOR EACH ROW BEGIN
+        INSERT INTO `guild_ranks` (`name`, `level`, `guild_id`) VALUES ('Leader', 3, NEW.`id`);
+        INSERT INTO `guild_ranks` (`name`, `level`, `guild_id`) VALUES ('Vice-Leader', 2, NEW.`id`);
+        INSERT INTO `guild_ranks` (`name`, `level`, `guild_id`) VALUES ('Member', 1, NEW.`id`);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `ondelete_guilds` BEFORE DELETE ON `guilds` FOR EACH ROW BEGIN
+        UPDATE `players` SET `guildnick` = '', `rank_id` = 0 WHERE `rank_id` IN (SELECT `id` FROM `guild_ranks` WHERE `guild_id` = OLD.`id`);
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `guild_invites`
+--
+
+CREATE TABLE `guild_invites` (
+  `player_id` int(11) NOT NULL DEFAULT '0',
+  `guild_id` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `guild_kills`
+--
+
+CREATE TABLE `guild_kills` (
+  `id` int(11) NOT NULL,
+  `guild_id` int(11) NOT NULL,
+  `war_id` int(11) NOT NULL,
+  `death_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `guild_ranks`
+--
+
+CREATE TABLE `guild_ranks` (
+  `id` int(11) NOT NULL,
+  `guild_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `level` int(11) NOT NULL COMMENT '1 - leader, 2 - vice leader, 3 - member'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `guild_ranks`
+--
+
+INSERT INTO `guild_ranks` (`id`, `guild_id`, `name`, `level`) VALUES
+(1, 1, 'Leader', 3),
+(2, 1, 'Vice-Leader', 2),
+(3, 1, 'Member', 1),
+(4, 2, 'Leader', 3),
+(5, 2, 'Vice-Leader', 2),
+(6, 2, 'Member', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `guild_wars`
+--
+
+CREATE TABLE `guild_wars` (
+  `id` int(11) NOT NULL,
+  `guild_id` int(11) NOT NULL,
+  `enemy_id` int(11) NOT NULL,
+  `begin` bigint(20) NOT NULL DEFAULT '0',
+  `end` bigint(20) NOT NULL DEFAULT '0',
+  `frags` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `payment` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `guild_kills` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `enemy_kills` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `status` tinyint(1) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `houses`
+--
+
+CREATE TABLE `houses` (
+  `id` int(11) NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `owner` int(11) NOT NULL,
+  `paid` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `warnings` int(11) NOT NULL DEFAULT '0',
+  `lastwarning` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL,
+  `town` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `size` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `price` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `rent` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `doors` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `beds` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `tiles` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `guild` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `clear` tinyint(1) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `houses`
+--
+
+INSERT INTO `houses` (`id`, `world_id`, `owner`, `paid`, `warnings`, `lastwarning`, `name`, `town`, `size`, `price`, `rent`, `doors`, `beds`, `tiles`, `guild`, `clear`) VALUES
+(2, 0, 0, 0, 0, 0, 'Unnamed House #2', 1, 14, 27000, 0, 1, 2, 27, 0, 0),
+(3, 0, 0, 0, 0, 0, 'Unnamed House #3', 1, 14, 27000, 0, 1, 2, 27, 0, 0),
+(4, 0, 0, 0, 0, 0, 'Unnamed House #4', 1, 14, 27000, 0, 1, 2, 27, 0, 0),
+(5, 0, 0, 0, 0, 0, 'Unnamed House #5', 1, 23, 36000, 0, 1, 2, 36, 0, 0),
+(6, 0, 0, 0, 0, 0, 'Unnamed House #6', 1, 11, 21000, 0, 1, 0, 21, 0, 0),
+(7, 0, 0, 0, 0, 0, 'Unnamed House #7', 1, 13, 23000, 0, 1, 0, 23, 0, 0),
+(9, 0, 0, 0, 0, 0, 'Unnamed House #9', 1, 40, 65000, 0, 3, 0, 65, 0, 0),
+(12, 0, 0, 0, 0, 0, 'Unnamed House #12', 1, 128, 175000, 0, 7, 4, 175, 0, 0),
+(13, 0, 0, 0, 0, 0, 'Unnamed House #13', 1, 11, 17000, 0, 1, 0, 17, 0, 0),
+(14, 0, 0, 0, 0, 0, 'Unnamed House #14', 1, 12, 20000, 0, 1, 0, 20, 0, 0),
+(15, 0, 0, 0, 0, 0, 'Unnamed House #15', 1, 12, 18000, 0, 1, 0, 18, 0, 0),
+(16, 0, 0, 0, 0, 0, 'Unnamed House #16', 1, 10, 20000, 0, 1, 2, 20, 0, 0),
+(17, 0, 0, 0, 0, 0, 'Unnamed House #17', 1, 10, 20000, 0, 1, 2, 20, 0, 0),
+(19, 0, 0, 0, 0, 0, 'Unnamed House #19', 1, 10, 20000, 0, 1, 2, 20, 0, 0),
+(20, 0, 0, 0, 0, 0, 'Unnamed House #20', 1, 14, 26000, 0, 1, 2, 26, 0, 0),
+(21, 0, 0, 0, 0, 0, 'Unnamed House #21', 1, 18, 36000, 0, 1, 2, 36, 0, 0),
+(22, 0, 0, 0, 0, 0, 'Unnamed House #22', 1, 10, 20000, 0, 1, 2, 20, 0, 0),
+(23, 0, 0, 0, 0, 0, 'Unnamed House #23', 1, 10, 20000, 0, 1, 2, 20, 0, 0),
+(24, 0, 0, 0, 0, 0, 'Unnamed House #24', 1, 10, 26000, 0, 1, 2, 26, 0, 0),
+(25, 0, 0, 0, 0, 0, 'Unnamed House #25', 1, 10, 20000, 0, 1, 2, 20, 0, 0),
+(26, 0, 0, 0, 0, 0, 'Unnamed House #26', 1, 14, 36000, 0, 1, 2, 36, 0, 0),
+(27, 0, 0, 0, 0, 0, 'Unnamed House #27', 1, 19, 47000, 0, 1, 2, 47, 0, 0),
+(28, 0, 0, 0, 0, 0, 'Unnamed House #28', 1, 10, 20000, 0, 1, 2, 20, 0, 0),
+(29, 0, 0, 0, 0, 0, 'Unnamed House #29', 1, 11, 21000, 0, 1, 2, 21, 0, 0),
+(30, 0, 0, 0, 0, 0, 'Unnamed House #30', 1, 10, 22000, 0, 1, 2, 22, 0, 0),
+(31, 0, 0, 0, 0, 0, 'Unnamed House #31', 1, 10, 20000, 0, 1, 2, 20, 0, 0),
+(32, 0, 0, 0, 0, 0, 'Unnamed House #32', 1, 14, 30000, 0, 1, 2, 30, 0, 0),
+(33, 0, 0, 0, 0, 0, 'Unnamed House #33', 1, 41, 76000, 0, 2, 2, 76, 0, 0),
+(38, 0, 0, 0, 0, 0, 'Unnamed House #38', 1, 15, 24000, 0, 1, 0, 24, 0, 0),
+(39, 0, 0, 0, 0, 0, 'Unnamed House #39', 1, 11, 21000, 0, 1, 0, 21, 0, 0),
+(40, 0, 0, 0, 0, 0, 'Unnamed House #40', 1, 15, 25000, 0, 1, 0, 25, 0, 0),
+(41, 0, 0, 0, 0, 0, 'Unnamed House #41', 1, 48, 69000, 0, 2, 0, 69, 0, 0),
+(42, 0, 0, 0, 0, 0, 'Unnamed House #42', 1, 8, 18000, 0, 1, 2, 18, 0, 0),
+(43, 0, 0, 0, 0, 0, 'Unnamed House #43', 1, 13, 24000, 0, 1, 2, 24, 0, 0),
+(44, 0, 0, 0, 0, 0, 'Unnamed House #44', 1, 18, 33000, 0, 1, 2, 33, 0, 0),
+(45, 0, 0, 0, 0, 0, 'Unnamed House #45', 1, 18, 30000, 0, 1, 2, 30, 0, 0),
+(46, 0, 0, 0, 0, 0, 'Unnamed House #46', 1, 18, 30000, 0, 1, 2, 30, 0, 0),
+(47, 0, 0, 0, 0, 0, 'Unnamed House #47', 1, 16, 30000, 0, 1, 2, 30, 0, 0),
+(48, 0, 0, 0, 0, 0, 'Unnamed House #48', 1, 16, 30000, 0, 1, 2, 30, 0, 0),
+(49, 0, 0, 0, 0, 0, 'Unnamed House #49', 1, 47, 72000, 0, 1, 2, 72, 0, 0),
+(50, 0, 0, 0, 0, 0, 'Unnamed House #50', 1, 47, 73000, 0, 1, 2, 73, 0, 0),
+(51, 0, 0, 0, 0, 0, 'Unnamed House #51', 1, 83, 115000, 0, 2, 2, 115, 0, 0),
+(52, 0, 0, 0, 0, 0, 'Unnamed House #52', 1, 48, 74000, 0, 1, 2, 74, 0, 0),
+(53, 0, 0, 0, 0, 0, 'Unnamed House #53', 1, 45, 57000, 0, 1, 4, 57, 0, 0),
+(54, 0, 0, 0, 0, 0, 'Unnamed House #54', 1, 45, 57000, 0, 1, 4, 57, 0, 0),
+(55, 0, 0, 0, 0, 0, 'Unnamed House #55', 1, 45, 57000, 0, 1, 4, 57, 0, 0),
+(56, 0, 0, 0, 0, 0, 'Unnamed House #56', 1, 45, 64000, 0, 1, 4, 64, 0, 0),
+(57, 0, 0, 0, 0, 0, 'Unnamed House #57', 1, 45, 64000, 0, 1, 4, 64, 0, 0),
+(58, 0, 0, 0, 0, 0, 'Unnamed House #58', 1, 45, 64000, 0, 1, 4, 64, 0, 0),
+(59, 0, 0, 0, 0, 0, 'Unnamed House #59', 1, 18, 30000, 0, 1, 2, 30, 0, 0),
+(60, 0, 0, 0, 0, 0, 'Unnamed House #60', 1, 18, 30000, 0, 1, 2, 30, 0, 0),
+(61, 0, 0, 0, 0, 0, 'Unnamed House #61', 1, 64, 87000, 0, 1, 4, 87, 0, 0),
+(62, 0, 0, 0, 0, 0, 'Unnamed House #62', 1, 61, 84000, 0, 1, 4, 84, 0, 0),
+(63, 0, 0, 0, 0, 0, 'Unnamed House #63', 1, 68, 92000, 0, 1, 4, 92, 0, 0),
+(64, 0, 0, 0, 0, 0, 'Unnamed House #64', 1, 56, 77000, 0, 1, 4, 77, 0, 0),
+(65, 0, 0, 0, 0, 0, 'Unnamed House #65', 1, 57, 85000, 0, 1, 2, 85, 0, 0),
+(66, 0, 0, 0, 0, 0, 'Unnamed House #66', 1, 22, 36000, 0, 1, 2, 36, 0, 0),
+(67, 0, 0, 0, 0, 0, 'Unnamed House #67', 1, 26, 41000, 0, 1, 2, 41, 0, 0),
+(68, 0, 0, 0, 0, 0, 'Unnamed House #68', 1, 26, 40000, 0, 1, 2, 40, 0, 0),
+(69, 0, 0, 0, 0, 0, 'Unnamed House #69', 1, 22, 35000, 0, 1, 2, 35, 0, 0),
+(70, 0, 0, 0, 0, 0, 'Unnamed House #70', 1, 22, 36000, 0, 1, 2, 36, 0, 0),
+(71, 0, 0, 0, 0, 0, 'Unnamed House #71', 1, 22, 36000, 0, 1, 2, 36, 0, 0),
+(72, 0, 0, 0, 0, 0, 'Unnamed House #72', 1, 22, 35000, 0, 1, 2, 35, 0, 0),
+(73, 0, 0, 0, 0, 0, 'Unnamed House #73', 1, 22, 35000, 0, 1, 2, 35, 0, 0),
+(74, 0, 0, 0, 0, 0, 'Unnamed House #74', 1, 18, 30000, 0, 1, 2, 30, 0, 0),
+(75, 0, 0, 0, 0, 0, 'Unnamed House #75', 1, 22, 35000, 0, 1, 2, 35, 0, 0),
+(76, 0, 0, 0, 0, 0, 'Unnamed House #76', 1, 48, 70000, 0, 1, 2, 70, 0, 0),
+(78, 0, 0, 0, 0, 0, 'Unnamed House #78', 1, 52, 80000, 0, 1, 2, 80, 0, 0),
+(79, 0, 0, 0, 0, 0, 'Unnamed House #79', 1, 52, 80000, 0, 1, 2, 80, 0, 0),
+(80, 0, 0, 0, 0, 0, 'Unnamed House #80', 1, 52, 80000, 0, 1, 2, 80, 0, 0),
+(81, 0, 0, 0, 0, 0, 'Unnamed House #81', 1, 102, 160000, 0, 2, 6, 160, 0, 0),
+(82, 0, 0, 0, 0, 0, 'Unnamed House #82', 1, 102, 160000, 0, 2, 6, 160, 0, 0),
+(83, 0, 0, 0, 0, 0, 'Unnamed House #83', 1, 102, 160000, 0, 2, 6, 160, 0, 0),
+(84, 0, 0, 0, 0, 0, 'Unnamed House #84', 1, 52, 80000, 0, 1, 2, 80, 0, 0),
+(85, 0, 0, 0, 0, 0, 'Unnamed House #85', 2, 13, 24000, 0, 1, 2, 24, 0, 0),
+(86, 0, 0, 0, 0, 0, 'Unnamed House #86', 2, 13, 25000, 0, 1, 2, 25, 0, 0),
+(87, 0, 0, 0, 0, 0, 'Unnamed House #87', 2, 25, 39000, 0, 1, 2, 39, 0, 0),
+(88, 0, 0, 0, 0, 0, 'Unnamed House #88', 2, 10, 20000, 0, 1, 2, 20, 0, 0),
+(89, 0, 0, 0, 0, 0, 'Unnamed House #89', 2, 10, 20000, 0, 1, 2, 20, 0, 0),
+(90, 0, 0, 0, 0, 0, 'Unnamed House #90', 2, 10, 21000, 0, 1, 2, 21, 0, 0),
+(91, 0, 0, 0, 0, 0, 'Unnamed House #91', 2, 10, 21000, 0, 1, 2, 21, 0, 0),
+(92, 0, 0, 0, 0, 0, 'Unnamed House #92', 2, 16, 28000, 0, 2, 2, 28, 0, 0),
+(94, 0, 0, 0, 0, 0, 'Unnamed House #94', 2, 22, 35000, 0, 1, 2, 35, 0, 0),
+(95, 0, 0, 0, 0, 0, 'Unnamed House #95', 2, 22, 35000, 0, 1, 2, 35, 0, 0),
+(96, 0, 0, 0, 0, 0, 'Unnamed House #96', 2, 22, 35000, 0, 1, 2, 35, 0, 0),
+(97, 0, 0, 0, 0, 0, 'Unnamed House #97', 2, 22, 35000, 0, 1, 2, 35, 0, 0),
+(98, 0, 0, 0, 0, 0, 'Unnamed House #98', 2, 22, 35000, 0, 1, 2, 35, 0, 0),
+(99, 0, 0, 0, 0, 0, 'Unnamed House #99', 2, 14, 25000, 0, 1, 2, 25, 0, 0),
+(100, 0, 0, 0, 0, 0, 'Unnamed House #100', 2, 14, 25000, 0, 1, 2, 25, 0, 0),
+(101, 0, 0, 0, 0, 0, 'Unnamed House #101', 2, 14, 25000, 0, 1, 2, 25, 0, 0),
+(102, 0, 0, 0, 0, 0, 'Unnamed House #102', 2, 14, 25000, 0, 1, 2, 25, 0, 0),
+(103, 0, 0, 0, 0, 0, 'Unnamed House #103', 2, 14, 25000, 0, 1, 2, 25, 0, 0),
+(105, 0, 0, 0, 0, 0, 'Unnamed House #105', 3, 24, 40000, 0, 1, 4, 40, 0, 0),
+(106, 0, 0, 0, 0, 0, 'Unnamed House #106', 3, 7, 17000, 0, 1, 2, 17, 0, 0),
+(107, 0, 0, 0, 0, 0, 'Unnamed House #107', 3, 7, 17000, 0, 1, 2, 17, 0, 0),
+(108, 0, 0, 0, 0, 0, 'Unnamed House #108', 3, 7, 17000, 0, 1, 2, 17, 0, 0),
+(109, 0, 0, 0, 0, 0, 'Unnamed House #109', 3, 23, 37000, 0, 1, 2, 37, 0, 0),
+(110, 0, 0, 0, 0, 0, 'Unnamed House #110', 3, 23, 37000, 0, 1, 2, 37, 0, 0),
+(111, 0, 0, 0, 0, 0, 'Unnamed House #111', 3, 23, 37000, 0, 1, 2, 37, 0, 0),
+(112, 0, 0, 0, 0, 0, 'Unnamed House #112', 3, 77, 114000, 0, 1, 4, 114, 0, 0),
+(113, 0, 0, 0, 0, 0, 'Unnamed House #113', 3, 77, 114000, 0, 1, 4, 114, 0, 0),
+(114, 0, 0, 0, 0, 0, 'Unnamed House #114', 3, 77, 114000, 0, 1, 4, 114, 0, 0),
+(115, 0, 0, 0, 0, 0, 'Unnamed House #115', 3, 59, 81000, 0, 1, 4, 81, 0, 0),
+(116, 0, 0, 0, 0, 0, 'Unnamed House #116', 3, 159, 210000, 0, 2, 6, 210, 0, 0),
+(117, 0, 0, 0, 0, 0, 'Unnamed House #117', 3, 67, 90000, 0, 1, 4, 90, 0, 0),
+(118, 0, 0, 0, 0, 0, 'Unnamed House #118', 3, 33, 49000, 0, 1, 2, 49, 0, 0),
+(119, 0, 0, 0, 0, 0, 'Unnamed House #119', 3, 33, 49000, 0, 1, 2, 49, 0, 0),
+(120, 0, 0, 0, 0, 0, 'Unnamed House #120', 3, 68, 90000, 0, 1, 4, 90, 0, 0),
+(121, 0, 0, 0, 0, 0, 'Unnamed House #121', 3, 38, 54000, 0, 1, 2, 54, 0, 0),
+(122, 0, 0, 0, 0, 0, 'Unnamed House #122', 4, 66, 102000, 0, 2, 4, 102, 0, 0),
+(123, 0, 0, 0, 0, 0, 'Unnamed House #123', 4, 66, 102000, 0, 2, 4, 102, 0, 0),
+(124, 0, 0, 0, 0, 0, 'Unnamed House #124', 4, 66, 102000, 0, 2, 4, 102, 0, 0),
+(126, 0, 0, 0, 0, 0, 'Unnamed House #126', 7, 57, 91000, 0, 2, 4, 91, 0, 0),
+(127, 0, 0, 0, 0, 0, 'Unnamed House #127', 7, 57, 91000, 0, 2, 4, 91, 0, 0),
+(128, 0, 0, 0, 0, 0, 'Unnamed House #128', 7, 57, 90000, 0, 1, 4, 90, 0, 0),
+(129, 0, 0, 0, 0, 0, 'Unnamed House #129', 7, 57, 89000, 0, 0, 4, 89, 0, 0),
+(130, 0, 0, 0, 0, 0, 'Unnamed House #130', 7, 30, 45000, 0, 1, 2, 45, 0, 0),
+(131, 0, 0, 0, 0, 0, 'Unnamed House #131', 7, 30, 46000, 0, 1, 2, 46, 0, 0),
+(132, 0, 0, 0, 0, 0, 'Unnamed House #132', 7, 30, 45000, 0, 1, 2, 45, 0, 0),
+(133, 0, 0, 0, 0, 0, 'Unnamed House #133', 7, 30, 46000, 0, 1, 2, 46, 0, 0),
+(134, 0, 0, 0, 0, 0, 'Unnamed House #134', 7, 30, 45000, 0, 1, 2, 45, 0, 0),
+(135, 0, 0, 0, 0, 0, 'Unnamed House #135', 7, 30, 46000, 0, 1, 2, 46, 0, 0),
+(136, 0, 0, 0, 0, 0, 'Unnamed House #136', 7, 30, 45000, 0, 1, 2, 45, 0, 0),
+(137, 0, 0, 0, 0, 0, 'Unnamed House #137', 7, 30, 46000, 0, 1, 2, 46, 0, 0),
+(138, 0, 0, 0, 0, 0, 'Unnamed House #138', 7, 8, 18000, 0, 1, 2, 18, 0, 0),
+(139, 0, 0, 0, 0, 0, 'Unnamed House #139', 7, 8, 18000, 0, 1, 2, 18, 0, 0),
+(140, 0, 0, 0, 0, 0, 'Unnamed House #140', 7, 8, 18000, 0, 1, 2, 18, 0, 0),
+(141, 0, 0, 0, 0, 0, 'Unnamed House #141', 7, 8, 19000, 0, 1, 2, 19, 0, 0),
+(142, 0, 0, 0, 0, 0, 'Unnamed House #142', 7, 8, 19000, 0, 1, 2, 19, 0, 0),
+(143, 0, 0, 0, 0, 0, 'Unnamed House #143', 7, 8, 19000, 0, 1, 2, 19, 0, 0),
+(144, 0, 0, 0, 0, 0, 'Unnamed House #144', 7, 67, 105000, 0, 1, 4, 105, 0, 0),
+(145, 0, 0, 0, 0, 0, 'Unnamed House #145', 7, 8, 15000, 0, 1, 0, 15, 0, 0),
+(146, 0, 0, 0, 0, 0, 'Unnamed House #146', 7, 8, 15000, 0, 1, 0, 15, 0, 0),
+(147, 0, 0, 0, 0, 0, 'Unnamed House #147', 7, 8, 15000, 0, 1, 0, 15, 0, 0),
+(148, 0, 0, 0, 0, 0, 'Unnamed House #148', 8, 23, 36000, 0, 1, 2, 36, 0, 0),
+(149, 0, 0, 0, 0, 0, 'Unnamed House #149', 8, 23, 36000, 0, 1, 2, 36, 0, 0),
+(150, 0, 0, 0, 0, 0, 'Unnamed House #150', 8, 32, 55000, 0, 2, 2, 55, 0, 0),
+(151, 0, 0, 0, 0, 0, 'Unnamed House #151', 8, 32, 55000, 0, 2, 2, 55, 0, 0),
+(152, 0, 0, 0, 0, 0, 'Unnamed House #152', 8, 32, 55000, 0, 2, 2, 55, 0, 0),
+(153, 0, 0, 0, 0, 0, 'Unnamed House #153', 8, 26, 41000, 0, 1, 2, 41, 0, 0),
+(154, 0, 0, 0, 0, 0, 'Unnamed House #154', 8, 26, 41000, 0, 1, 2, 41, 0, 0),
+(155, 0, 0, 0, 0, 0, 'Unnamed House #155', 8, 26, 41000, 0, 1, 2, 41, 0, 0),
+(156, 0, 0, 0, 0, 0, 'Unnamed House #156', 8, 18, 30000, 0, 1, 2, 30, 0, 0),
+(157, 0, 0, 0, 0, 0, 'Unnamed House #157', 8, 13, 25000, 0, 1, 2, 25, 0, 0),
+(158, 0, 0, 0, 0, 0, 'Unnamed House #158', 8, 13, 25000, 0, 1, 2, 25, 0, 0),
+(159, 0, 0, 0, 0, 0, 'Unnamed House #159', 8, 13, 25000, 0, 1, 2, 25, 0, 0),
+(160, 0, 0, 0, 0, 0, 'Unnamed House #160', 8, 18, 30000, 0, 1, 2, 30, 0, 0),
+(161, 0, 0, 0, 0, 0, 'Unnamed House #161', 8, 18, 30000, 0, 1, 2, 30, 0, 0),
+(162, 0, 0, 0, 0, 0, 'Unnamed House #162', 1, 57, 75000, 0, 1, 0, 75, 0, 0),
+(165, 0, 0, 0, 0, 0, 'Unnamed House #165', 1, 78, 98000, 0, 1, 0, 98, 0, 0),
+(166, 0, 0, 0, 0, 0, 'Unnamed House #166', 1, 70, 89000, 0, 1, 0, 89, 0, 0),
+(168, 0, 0, 0, 0, 0, 'Unnamed House #168', 1, 112, 135000, 0, 0, 0, 135, 0, 0),
+(169, 0, 0, 0, 0, 0, 'Unnamed House #169', 1, 78, 98000, 0, 0, 0, 98, 0, 0),
+(187, 0, 0, 0, 0, 0, 'Unnamed House #187', 1, 1, 1000, 0, 0, 0, 1, 0, 0),
+(195, 0, 0, 0, 0, 0, 'Unnamed House #195', 1, 27, 42000, 0, 1, 2, 42, 0, 0),
+(330, 0, 0, 0, 0, 0, 'Unnamed House #330', 1, 10, 18000, 0, 1, 0, 18, 0, 0),
+(332, 0, 0, 0, 0, 0, 'Unnamed House #332', 1, 11, 16000, 0, 1, 0, 16, 0, 0),
+(334, 0, 0, 0, 0, 0, 'Unnamed House #334', 1, 10, 17000, 0, 1, 0, 17, 0, 0),
+(360, 0, 0, 0, 0, 0, 'Unnamed House #360', 1, 18, 28000, 0, 2, 0, 28, 0, 0),
+(361, 0, 0, 0, 0, 0, 'Unnamed House #361', 1, 23, 31000, 0, 1, 0, 31, 0, 0),
+(362, 0, 0, 0, 0, 0, 'Unnamed House #362', 1, 21, 35000, 0, 1, 0, 35, 0, 0),
+(363, 0, 0, 0, 0, 0, 'Unnamed House #363', 1, 11, 18000, 0, 1, 0, 18, 0, 0),
+(364, 0, 0, 0, 0, 0, 'Unnamed House #364', 1, 15, 24000, 0, 1, 0, 24, 0, 0),
+(365, 0, 0, 0, 0, 0, 'Unnamed House #365', 1, 23, 34000, 0, 1, 0, 34, 0, 0),
+(366, 0, 0, 0, 0, 0, 'Unnamed House #366', 1, 27, 38000, 0, 1, 0, 38, 0, 0),
+(367, 0, 0, 0, 0, 0, 'Unnamed House #367', 1, 23, 36000, 0, 2, 0, 36, 0, 0),
+(368, 0, 0, 0, 0, 0, 'Unnamed House #368', 1, 44, 60000, 0, 1, 0, 60, 0, 0),
+(369, 0, 0, 0, 0, 0, 'Unnamed House #369', 1, 44, 60000, 0, 1, 0, 60, 0, 0),
+(370, 0, 0, 0, 0, 0, 'Unnamed House #370', 1, 44, 48000, 0, 1, 0, 48, 0, 0),
+(371, 0, 0, 0, 0, 0, 'Unnamed House #371', 1, 44, 48000, 0, 1, 0, 48, 0, 0),
+(372, 0, 0, 0, 0, 0, 'Unnamed House #372', 1, 44, 65000, 0, 1, 0, 65, 0, 0),
+(373, 0, 0, 0, 0, 0, 'Unnamed House #373', 1, 44, 52000, 0, 1, 0, 52, 0, 0),
+(374, 0, 0, 0, 0, 0, 'Unnamed House #374', 1, 44, 52000, 0, 1, 0, 52, 0, 0),
+(375, 0, 0, 0, 0, 0, 'Unnamed House #375', 1, 44, 65000, 0, 1, 0, 65, 0, 0),
+(376, 0, 0, 0, 0, 0, 'Unnamed House #376', 1, 97, 108000, 0, 1, 0, 108, 0, 0),
+(377, 0, 0, 0, 0, 0, 'Unnamed House #377', 1, 106, 120000, 0, 1, 0, 120, 0, 0),
+(378, 0, 0, 0, 0, 0, 'Unnamed House #378', 1, 103, 120000, 0, 1, 0, 120, 0, 0),
+(379, 0, 0, 0, 0, 0, 'Unnamed House #379', 1, 1347, 1446000, 0, 7, 0, 1446, 0, 0),
+(380, 0, 0, 0, 0, 0, 'Unnamed House #380', 1, 106, 117000, 0, 1, 0, 117, 0, 0),
+(381, 0, 0, 0, 0, 0, 'Unnamed House #381', 1, 106, 117000, 0, 1, 0, 117, 0, 0),
+(382, 0, 0, 0, 0, 0, 'Unnamed House #382', 1, 118, 130000, 0, 1, 0, 130, 0, 0),
+(383, 0, 0, 0, 0, 0, 'Unnamed House #383', 1, 106, 117000, 0, 1, 0, 117, 0, 0),
+(384, 0, 0, 0, 0, 0, 'Unnamed House #384', 1, 106, 117000, 0, 1, 0, 117, 0, 0),
+(385, 0, 0, 0, 0, 0, 'Unnamed House #385', 1, 106, 117000, 0, 1, 0, 117, 0, 0),
+(386, 0, 0, 0, 0, 0, 'Unnamed House #386', 1, 106, 130000, 0, 1, 0, 130, 0, 0),
+(387, 0, 0, 0, 0, 0, 'Unnamed House #387', 1, 306, 340000, 0, 3, 2, 340, 0, 0),
+(388, 0, 0, 0, 0, 0, 'Unnamed House #388', 1, 819, 979000, 0, 7, 0, 979, 0, 0),
+(389, 0, 0, 0, 0, 0, 'Unnamed House #389', 1, 757, 900000, 0, 6, 0, 900, 0, 0),
+(390, 0, 0, 0, 0, 0, 'Unnamed House #390', 1, 169, 209000, 0, 5, 0, 209, 0, 0),
+(391, 0, 0, 0, 0, 0, 'Unnamed House #391', 1, 142, 196000, 0, 5, 0, 196, 0, 0),
+(392, 0, 0, 0, 0, 0, 'Unnamed House #392', 1, 207, 260000, 0, 3, 0, 260, 0, 0),
+(393, 0, 0, 0, 0, 0, 'Unnamed House #393', 1, 78, 112000, 0, 3, 0, 112, 0, 0),
+(394, 0, 0, 0, 0, 0, 'Unnamed House #394', 1, 70, 80000, 0, 1, 0, 80, 0, 0),
+(395, 0, 0, 0, 0, 0, 'Unnamed House #395', 1, 70, 80000, 0, 1, 0, 80, 0, 0),
+(396, 0, 0, 0, 0, 0, 'Unnamed House #396', 1, 70, 80000, 0, 1, 0, 80, 0, 0),
+(397, 0, 0, 0, 0, 0, 'Unnamed House #397', 1, 77, 96000, 0, 1, 0, 96, 0, 0),
+(398, 0, 0, 0, 0, 0, 'Unnamed House #398', 1, 81, 90000, 0, 1, 0, 90, 0, 0),
+(399, 0, 0, 0, 0, 0, 'Unnamed House #399', 1, 81, 90000, 0, 1, 0, 90, 0, 0),
+(400, 0, 0, 0, 0, 0, 'Unnamed House #400', 1, 81, 90000, 0, 1, 0, 90, 0, 0),
+(401, 0, 0, 0, 0, 0, 'Unnamed House #401', 1, 90, 100000, 0, 1, 0, 100, 0, 0),
+(402, 0, 0, 0, 0, 0, 'Unnamed House #402', 1, 90, 110000, 0, 1, 0, 110, 0, 0),
+(403, 0, 0, 0, 0, 0, 'Unnamed House #403', 1, 81, 90000, 0, 1, 0, 90, 0, 0),
+(404, 0, 0, 0, 0, 0, 'Unnamed House #404', 1, 81, 90000, 0, 1, 0, 90, 0, 0),
+(405, 0, 0, 0, 0, 0, 'Unnamed House #405', 1, 72, 110000, 0, 1, 0, 110, 0, 0),
+(406, 0, 0, 0, 0, 0, 'Unnamed House #406', 1, 26, 36000, 0, 2, 0, 36, 0, 0),
+(407, 0, 0, 0, 0, 0, 'Unnamed House #407', 1, 26, 44000, 0, 1, 0, 44, 0, 0),
+(410, 0, 0, 0, 0, 0, 'Unnamed House #410', 1, 33, 44000, 0, 2, 0, 44, 0, 0),
+(411, 0, 0, 0, 0, 0, 'Unnamed House #411', 1, 30, 48000, 0, 2, 0, 48, 0, 0),
+(412, 0, 0, 0, 0, 0, 'Unnamed House #412', 1, 30, 42000, 0, 2, 0, 42, 0, 0),
+(413, 0, 0, 0, 0, 0, 'Unnamed House #413', 1, 30, 42000, 0, 2, 0, 42, 0, 0),
+(414, 0, 0, 0, 0, 0, 'Unnamed House #414', 1, 30, 44000, 0, 1, 0, 44, 0, 0),
+(415, 0, 0, 0, 0, 0, 'Unnamed House #415', 1, 108, 142000, 0, 2, 0, 142, 0, 0),
+(416, 0, 0, 0, 0, 0, 'Unnamed House #416', 1, 108, 137000, 0, 2, 0, 137, 0, 0),
+(417, 0, 0, 0, 0, 0, 'Unnamed House #417', 1, 26, 35000, 0, 1, 0, 35, 0, 0),
+(418, 0, 0, 0, 0, 0, 'Unnamed House #418', 1, 26, 35000, 0, 1, 0, 35, 0, 0),
+(419, 0, 0, 0, 0, 0, 'Unnamed House #419', 1, 26, 34000, 0, 1, 0, 34, 0, 0),
+(420, 0, 0, 0, 0, 0, 'Unnamed House #420', 1, 33, 43000, 0, 1, 0, 43, 0, 0),
+(421, 0, 0, 0, 0, 0, 'Unnamed House #421', 1, 33, 42000, 0, 2, 0, 42, 0, 0),
+(422, 0, 0, 0, 0, 0, 'Unnamed House #422', 1, 26, 35000, 0, 2, 0, 35, 0, 0),
+(423, 0, 0, 0, 0, 0, 'Unnamed House #423', 1, 26, 39000, 0, 1, 0, 39, 0, 0),
+(424, 0, 0, 0, 0, 0, 'Unnamed House #424', 1, 26, 34000, 0, 1, 0, 34, 0, 0),
+(425, 0, 0, 0, 0, 0, 'Unnamed House #425', 1, 33, 46000, 0, 2, 0, 46, 0, 0),
+(426, 0, 0, 0, 0, 0, 'Unnamed House #426', 1, 33, 42000, 0, 1, 0, 42, 0, 0),
+(427, 0, 0, 0, 0, 0, 'Unnamed House #427', 1, 108, 135000, 0, 1, 0, 135, 0, 0),
+(428, 0, 0, 0, 0, 0, 'Unnamed House #428', 1, 30, 39000, 0, 1, 0, 39, 0, 0),
+(429, 0, 0, 0, 0, 0, 'Unnamed House #429', 1, 30, 39000, 0, 1, 0, 39, 0, 0),
+(430, 0, 0, 0, 0, 0, 'Unnamed House #430', 1, 26, 37000, 0, 1, 0, 37, 0, 0),
+(431, 0, 0, 0, 0, 0, 'Unnamed House #431', 1, 26, 36000, 0, 2, 0, 36, 0, 0),
+(432, 0, 0, 0, 0, 0, 'Unnamed House #432', 1, 26, 34000, 0, 1, 0, 34, 0, 0),
+(433, 0, 0, 0, 0, 0, 'Unnamed House #433', 1, 33, 39000, 0, 1, 0, 39, 0, 0),
+(434, 0, 0, 0, 0, 0, 'Unnamed House #434', 1, 33, 45000, 0, 2, 0, 45, 0, 0),
+(435, 0, 0, 0, 0, 0, 'Unnamed House #435', 1, 108, 132000, 0, 1, 0, 132, 0, 0),
+(436, 0, 0, 0, 0, 0, 'Unnamed House #436', 1, 108, 126000, 0, 1, 0, 126, 0, 0),
+(437, 0, 0, 0, 0, 0, 'Unnamed House #437', 1, 108, 132000, 0, 2, 0, 132, 0, 0),
+(438, 0, 0, 0, 0, 0, 'Unnamed House #438', 1, 108, 127000, 0, 1, 0, 127, 0, 0),
+(439, 0, 0, 0, 0, 0, 'Unnamed House #439', 1, 108, 136000, 0, 1, 0, 136, 0, 0),
+(440, 0, 0, 0, 0, 0, 'Unnamed House #440', 1, 108, 141000, 0, 2, 0, 141, 0, 0),
+(441, 0, 0, 0, 0, 0, 'Unnamed House #441', 1, 108, 127000, 0, 1, 0, 127, 0, 0),
+(442, 0, 0, 0, 0, 0, 'Unnamed House #442', 1, 118, 131000, 0, 1, 0, 131, 0, 0),
+(443, 0, 0, 0, 0, 0, 'Unnamed House #443', 1, 79, 90000, 0, 1, 0, 90, 0, 0),
+(444, 0, 0, 0, 0, 0, 'Unnamed House #444', 1, 136, 157000, 0, 1, 0, 157, 0, 0),
+(445, 0, 0, 0, 0, 0, 'Unnamed House #445', 1, 136, 144000, 0, 0, 0, 144, 0, 0),
+(446, 0, 0, 0, 0, 0, 'Unnamed House #446', 1, 20, 25000, 0, 1, 0, 25, 0, 0),
+(447, 0, 0, 0, 0, 0, 'Unnamed House #447', 1, 20, 25000, 0, 1, 0, 25, 0, 0),
+(448, 0, 0, 0, 0, 0, 'Unnamed House #448', 1, 20, 30000, 0, 1, 0, 30, 0, 0),
+(449, 0, 0, 0, 0, 0, 'Unnamed House #449', 1, 20, 25000, 0, 1, 0, 25, 0, 0),
+(450, 0, 0, 0, 0, 0, 'Unnamed House #450', 1, 20, 25000, 0, 1, 0, 25, 0, 0),
+(451, 0, 0, 0, 0, 0, 'Unnamed House #451', 1, 56, 72000, 0, 2, 0, 72, 0, 0),
+(452, 0, 0, 0, 0, 0, 'Unnamed House #452', 1, 56, 72000, 0, 2, 0, 72, 0, 0),
+(453, 0, 0, 0, 0, 0, 'Unnamed House #453', 1, 56, 72000, 0, 2, 0, 72, 0, 0),
+(454, 0, 0, 0, 0, 0, 'Unnamed House #454', 1, 56, 72000, 0, 2, 0, 72, 0, 0),
+(455, 0, 0, 0, 0, 0, 'Unnamed House #455', 1, 48, 64000, 0, 1, 0, 64, 0, 0),
+(456, 0, 0, 0, 0, 0, 'Unnamed House #456', 1, 48, 64000, 0, 1, 0, 64, 0, 0),
+(457, 0, 0, 0, 0, 0, 'Unnamed House #457', 1, 48, 56000, 0, 1, 0, 56, 0, 0),
+(458, 0, 0, 0, 0, 0, 'Unnamed House #458', 1, 48, 64000, 0, 1, 0, 64, 0, 0),
+(459, 0, 0, 0, 0, 0, 'Unnamed House #459', 1, 48, 56000, 0, 1, 0, 56, 0, 0),
+(460, 0, 0, 0, 0, 0, 'Unnamed House #460', 1, 48, 56000, 0, 1, 0, 56, 0, 0),
+(461, 0, 0, 0, 0, 0, 'Unnamed House #461', 1, 48, 56000, 0, 1, 0, 56, 0, 0),
+(462, 0, 0, 0, 0, 0, 'Unnamed House #462', 1, 48, 56000, 0, 1, 0, 56, 0, 0),
+(463, 0, 0, 0, 0, 0, 'Unnamed House #463', 1, 56, 64000, 0, 1, 0, 64, 0, 0),
+(464, 0, 0, 0, 0, 0, 'Unnamed House #464', 1, 56, 64000, 0, 1, 0, 64, 0, 0),
+(465, 0, 0, 0, 0, 0, 'Unnamed House #465', 1, 56, 61000, 0, 1, 0, 61, 0, 0),
+(466, 0, 0, 0, 0, 0, 'Unnamed House #466', 1, 56, 64000, 0, 1, 0, 64, 0, 0),
+(467, 0, 0, 0, 0, 0, 'Unnamed House #467', 1, 56, 72000, 0, 1, 0, 72, 0, 0),
+(468, 0, 0, 0, 0, 0, 'Unnamed House #468', 1, 56, 64000, 0, 1, 0, 64, 0, 0),
+(469, 0, 0, 0, 0, 0, 'Unnamed House #469', 1, 56, 64000, 0, 1, 0, 64, 0, 0),
+(470, 0, 0, 0, 0, 0, 'Unnamed House #470', 1, 56, 64000, 0, 1, 0, 64, 0, 0),
+(471, 0, 0, 0, 0, 0, 'Unnamed House #471', 1, 56, 61000, 0, 1, 0, 61, 0, 0),
+(472, 0, 0, 0, 0, 0, 'Unnamed House #472', 1, 56, 64000, 0, 1, 0, 64, 0, 0),
+(473, 0, 0, 0, 0, 0, 'Unnamed House #473', 1, 48, 56000, 0, 1, 0, 56, 0, 0),
+(474, 0, 0, 0, 0, 0, 'Unnamed House #474', 1, 48, 56000, 0, 1, 0, 56, 0, 0),
+(475, 0, 0, 0, 0, 0, 'Unnamed House #475', 1, 48, 56000, 0, 1, 0, 56, 0, 0),
+(476, 0, 0, 0, 0, 0, 'Unnamed House #476', 1, 48, 56000, 0, 1, 0, 56, 0, 0),
+(477, 0, 0, 0, 0, 0, 'Unnamed House #477', 1, 12, 20000, 0, 1, 0, 20, 0, 0),
+(478, 0, 0, 0, 0, 0, 'Unnamed House #478', 1, 10, 15000, 0, 1, 2, 15, 0, 0),
+(479, 0, 0, 0, 0, 0, 'Unnamed House #479', 1, 30, 35000, 0, 1, 0, 35, 0, 0),
+(480, 0, 0, 0, 0, 0, 'Unnamed House #480', 1, 30, 35000, 0, 1, 0, 35, 0, 0),
+(481, 0, 0, 0, 0, 0, 'Unnamed House #481', 1, 30, 35000, 0, 1, 0, 35, 0, 0),
+(482, 0, 0, 0, 0, 0, 'Unnamed House #482', 1, 30, 35000, 0, 1, 0, 35, 0, 0),
+(483, 0, 0, 0, 0, 0, 'Unnamed House #483', 1, 30, 35000, 0, 1, 0, 35, 0, 0),
+(484, 0, 0, 0, 0, 0, 'Unnamed House #484', 1, 30, 35000, 0, 1, 0, 35, 0, 0),
+(485, 0, 0, 0, 0, 0, 'Unnamed House #485', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(486, 0, 0, 0, 0, 0, 'Unnamed House #486', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(487, 0, 0, 0, 0, 0, 'Unnamed House #487', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(488, 0, 0, 0, 0, 0, 'Unnamed House #488', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(489, 0, 0, 0, 0, 0, 'Unnamed House #489', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(490, 0, 0, 0, 0, 0, 'Unnamed House #490', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(491, 0, 0, 0, 0, 0, 'Unnamed House #491', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(492, 0, 0, 0, 0, 0, 'Unnamed House #492', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(493, 0, 0, 0, 0, 0, 'Unnamed House #493', 1, 25, 36000, 0, 1, 0, 36, 0, 0),
+(494, 0, 0, 0, 0, 0, 'Unnamed House #494', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(495, 0, 0, 0, 0, 0, 'Unnamed House #495', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(496, 0, 0, 0, 0, 0, 'Unnamed House #496', 1, 25, 30000, 0, 1, 0, 30, 0, 0),
+(498, 0, 0, 0, 0, 0, 'Unnamed House #498', 1, 36, 51000, 0, 1, 0, 51, 0, 0),
+(499, 0, 0, 0, 0, 0, 'Unnamed House #499', 1, 26, 36000, 0, 2, 0, 36, 0, 0),
+(500, 0, 0, 0, 0, 0, 'Unnamed House #500', 1, 23, 33000, 0, 1, 0, 33, 0, 0),
+(501, 0, 0, 0, 0, 0, 'Unnamed House #501', 1, 18, 30000, 0, 2, 0, 30, 0, 0),
+(502, 0, 0, 0, 0, 0, 'Unnamed House #502', 1, 23, 28000, 0, 1, 0, 28, 0, 0),
+(503, 0, 0, 0, 0, 0, 'Unnamed House #503', 1, 20, 30000, 0, 1, 0, 30, 0, 0),
+(504, 0, 0, 0, 0, 0, 'Unnamed House #504', 1, 23, 33000, 0, 1, 0, 33, 0, 0),
+(507, 0, 0, 0, 0, 0, 'Unnamed House #507', 1, 26, 36000, 0, 1, 0, 36, 0, 0),
+(508, 0, 0, 0, 0, 0, 'Unnamed House #508', 1, 26, 33000, 0, 1, 0, 33, 0, 0),
+(509, 0, 0, 0, 0, 0, 'Unnamed House #509', 1, 24, 28000, 0, 1, 0, 28, 0, 0),
+(510, 0, 0, 0, 0, 0, 'Unnamed House #510', 1, 36, 42000, 0, 1, 0, 42, 0, 0),
+(511, 0, 0, 0, 0, 0, 'Unnamed House #511', 1, 36, 42000, 0, 1, 0, 42, 0, 0),
+(512, 0, 0, 0, 0, 0, 'Unnamed House #512', 1, 14, 20000, 0, 1, 2, 20, 0, 0),
+(513, 0, 0, 0, 0, 0, 'Unnamed House #513', 1, 11, 15000, 0, 1, 0, 15, 0, 0),
+(514, 0, 0, 0, 0, 0, 'Unnamed House #514', 1, 14, 21000, 0, 1, 2, 21, 0, 0),
+(515, 0, 0, 0, 0, 0, 'Unnamed House #515', 1, 13, 21000, 0, 1, 0, 21, 0, 0),
+(516, 0, 0, 0, 0, 0, 'Unnamed House #516', 1, 11, 15000, 0, 1, 0, 15, 0, 0),
+(517, 0, 0, 0, 0, 0, 'Unnamed House #517', 1, 21, 33000, 0, 1, 2, 33, 0, 0),
+(518, 0, 0, 0, 0, 0, 'Unnamed House #518', 1, 21, 41000, 0, 2, 2, 41, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `house_auctions`
+--
+
+CREATE TABLE `house_auctions` (
+  `house_id` int(10) UNSIGNED NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `player_id` int(11) NOT NULL,
+  `bid` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `limit` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `endtime` bigint(20) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `house_data`
+--
+
+CREATE TABLE `house_data` (
+  `house_id` int(10) UNSIGNED NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `data` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `house_lists`
+--
+
+CREATE TABLE `house_lists` (
+  `house_id` int(10) UNSIGNED NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `listid` int(11) NOT NULL,
+  `list` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `killers`
+--
+
+CREATE TABLE `killers` (
+  `id` int(11) NOT NULL,
+  `death_id` int(11) NOT NULL,
+  `final_hit` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `unjustified` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `war` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `login_history`
+--
+
+CREATE TABLE `login_history` (
+  `account_id` int(11) NOT NULL DEFAULT '0',
+  `player_id` int(11) NOT NULL DEFAULT '0',
+  `type` tinyint(1) NOT NULL DEFAULT '0',
+  `login` tinyint(1) NOT NULL DEFAULT '0',
+  `ip` int(11) NOT NULL DEFAULT '0',
+  `date` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `lottery`
+--
+
+CREATE TABLE `lottery` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `item` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `market_history`
+--
+
+CREATE TABLE `market_history` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `player_id` int(11) NOT NULL,
+  `sale` tinyint(1) NOT NULL DEFAULT '0',
+  `itemtype` int(10) UNSIGNED NOT NULL,
+  `amount` smallint(5) UNSIGNED NOT NULL,
+  `price` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `expires_at` bigint(20) UNSIGNED NOT NULL,
+  `inserted` bigint(20) UNSIGNED NOT NULL,
+  `state` tinyint(1) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `market_offers`
+--
+
+CREATE TABLE `market_offers` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `player_id` int(11) NOT NULL,
+  `sale` tinyint(1) NOT NULL DEFAULT '0',
+  `itemtype` int(10) UNSIGNED NOT NULL,
+  `amount` smallint(5) UNSIGNED NOT NULL,
+  `created` bigint(20) UNSIGNED NOT NULL,
+  `anonymous` tinyint(1) NOT NULL DEFAULT '0',
+  `price` int(10) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `from` int(11) DEFAULT NULL,
+  `to` int(11) DEFAULT NULL,
+  `title` varchar(120) DEFAULT NULL,
+  `text` tinytext,
+  `time` int(11) DEFAULT NULL,
+  `delete_from` tinyint(1) DEFAULT NULL,
+  `delete_to` tinyint(1) DEFAULT NULL,
+  `unread` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `news`
+--
+
+CREATE TABLE `news` (
+  `id` int(11) NOT NULL,
+  `title` varchar(150) DEFAULT '',
+  `body` text,
+  `time` int(11) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `newsticker`
+--
+
+CREATE TABLE `newsticker` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `date` int(11) NOT NULL,
+  `text` text NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `players`
+--
+
+CREATE TABLE `players` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `group_id` int(11) NOT NULL DEFAULT '1',
+  `account_id` int(11) NOT NULL DEFAULT '0',
+  `level` int(11) NOT NULL DEFAULT '1',
+  `vocation` int(11) NOT NULL DEFAULT '0',
+  `health` int(11) NOT NULL DEFAULT '250',
+  `healthmax` int(11) NOT NULL DEFAULT '250',
+  `experience` bigint(20) NOT NULL DEFAULT '0',
+  `lookbody` int(11) NOT NULL DEFAULT '0',
+  `lookfeet` int(11) NOT NULL DEFAULT '0',
+  `lookhead` int(11) NOT NULL DEFAULT '0',
+  `looklegs` int(11) NOT NULL DEFAULT '0',
+  `looktype` int(11) NOT NULL DEFAULT '136',
+  `lookaddons` int(11) NOT NULL DEFAULT '0',
+  `lookmount` int(11) NOT NULL DEFAULT '0',
+  `maglevel` int(11) NOT NULL DEFAULT '0',
+  `mana` int(11) NOT NULL DEFAULT '250',
+  `manamax` int(11) NOT NULL DEFAULT '250',
+  `manaspent` int(11) NOT NULL DEFAULT '0',
+  `soul` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `town_id` int(11) NOT NULL DEFAULT '0',
+  `posx` int(11) NOT NULL DEFAULT '0',
+  `posy` int(11) NOT NULL DEFAULT '0',
+  `posz` int(11) NOT NULL DEFAULT '0',
+  `conditions` blob NOT NULL,
+  `cap` int(11) NOT NULL DEFAULT '0',
+  `sex` int(11) NOT NULL DEFAULT '0',
+  `lastlogin` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `lastip` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `save` tinyint(1) NOT NULL DEFAULT '1',
+  `skull` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `skulltime` int(11) NOT NULL DEFAULT '0',
+  `rank_id` int(11) NOT NULL DEFAULT '0',
+  `guildnick` varchar(255) NOT NULL DEFAULT '',
+  `lastlogout` bigint(20) UNSIGNED NOT NULL DEFAULT '0',
+  `blessings` tinyint(2) NOT NULL DEFAULT '0',
+  `pvp_blessing` tinyint(1) NOT NULL DEFAULT '0',
+  `balance` bigint(20) NOT NULL DEFAULT '0',
+  `stamina` int(11) NOT NULL DEFAULT '151200000',
+  `direction` int(11) NOT NULL DEFAULT '2',
+  `loss_experience` int(11) NOT NULL DEFAULT '100',
+  `loss_mana` int(11) NOT NULL DEFAULT '100',
+  `loss_skills` int(11) NOT NULL DEFAULT '100',
+  `loss_containers` int(11) NOT NULL DEFAULT '100',
+  `loss_items` int(11) NOT NULL DEFAULT '100',
+  `premend` int(11) NOT NULL DEFAULT '0' COMMENT 'NOT IN USE BY THE SERVER',
+  `online` tinyint(1) NOT NULL DEFAULT '0',
+  `marriage` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `promotion` int(11) NOT NULL DEFAULT '0',
+  `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `description` varchar(255) NOT NULL DEFAULT '',
+  `created` int(11) NOT NULL DEFAULT '0',
+  `hide_char` int(11) NOT NULL DEFAULT '0',
+  `comment` text NOT NULL,
+  `show_outfit` tinyint(4) NOT NULL DEFAULT '1',
+  `show_eq` tinyint(4) NOT NULL DEFAULT '1',
+  `show_bars` tinyint(4) NOT NULL DEFAULT '1',
+  `show_skills` tinyint(4) NOT NULL DEFAULT '1',
+  `show_quests` tinyint(4) NOT NULL DEFAULT '1',
+  `ip` varchar(17) NOT NULL DEFAULT '0',
+  `old_name` varchar(255) NOT NULL,
+  `offlinetraining_time` smallint(5) UNSIGNED NOT NULL DEFAULT '43200',
+  `offlinetraining_skill` int(11) NOT NULL DEFAULT '-1',
+  `cast` tinyint(4) NOT NULL DEFAULT '0',
+  `castViewers` int(11) NOT NULL DEFAULT '0',
+  `castDescription` varchar(255) NOT NULL,
+  `broadcasting` tinyint(4) DEFAULT '0',
+  `viewers` int(1) DEFAULT '0',
+  `nick_verify` int(11) DEFAULT NULL,
+  `exphist_lastexp` bigint(255) NOT NULL DEFAULT '0',
+  `worldtransfer` int(11) NOT NULL DEFAULT '0',
+  `exphist1` bigint(255) NOT NULL DEFAULT '0',
+  `exphist2` bigint(255) NOT NULL DEFAULT '0',
+  `exphist3` bigint(255) NOT NULL DEFAULT '0',
+  `exphist4` bigint(255) NOT NULL DEFAULT '0',
+  `exphist5` bigint(255) NOT NULL DEFAULT '0',
+  `exphist6` bigint(255) NOT NULL DEFAULT '0',
+  `exphist7` bigint(255) NOT NULL DEFAULT '0',
+  `onlinetimetoday` bigint(255) NOT NULL DEFAULT '0',
+  `onlinetime1` bigint(255) NOT NULL DEFAULT '0',
+  `onlinetime2` bigint(255) NOT NULL DEFAULT '0',
+  `onlinetime3` bigint(255) NOT NULL DEFAULT '0',
+  `onlinetime4` bigint(255) NOT NULL DEFAULT '0',
+  `onlinetime5` bigint(255) NOT NULL DEFAULT '0',
+  `onlinetime6` bigint(255) NOT NULL DEFAULT '0',
+  `onlinetime7` bigint(255) NOT NULL DEFAULT '0',
+  `onlinetimeall` bigint(255) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `players`
+--
+
+INSERT INTO `players` (`id`, `name`, `world_id`, `group_id`, `account_id`, `level`, `vocation`, `health`, `healthmax`, `experience`, `lookbody`, `lookfeet`, `lookhead`, `looklegs`, `looktype`, `lookaddons`, `lookmount`, `maglevel`, `mana`, `manamax`, `manaspent`, `soul`, `town_id`, `posx`, `posy`, `posz`, `conditions`, `cap`, `sex`, `lastlogin`, `lastip`, `save`, `skull`, `skulltime`, `rank_id`, `guildnick`, `lastlogout`, `blessings`, `pvp_blessing`, `balance`, `stamina`, `direction`, `loss_experience`, `loss_mana`, `loss_skills`, `loss_containers`, `loss_items`, `premend`, `online`, `marriage`, `promotion`, `deleted`, `description`, `created`, `hide_char`, `comment`, `show_outfit`, `show_eq`, `show_bars`, `show_skills`, `show_quests`, `ip`, `old_name`, `offlinetraining_time`, `offlinetraining_skill`, `cast`, `castViewers`, `castDescription`, `broadcasting`, `viewers`, `nick_verify`, `exphist_lastexp`, `worldtransfer`, `exphist1`, `exphist2`, `exphist3`, `exphist4`, `exphist5`, `exphist6`, `exphist7`, `onlinetimetoday`, `onlinetime1`, `onlinetime2`, `onlinetime3`, `onlinetime4`, `onlinetime5`, `onlinetime6`, `onlinetime7`, `onlinetimeall`) VALUES
+(1, 'Account Manager', 0, 1, 1, 1, 0, 250, 250, 0, 0, 0, 0, 0, 449, 0, 0, 0, 250, 250, 0, 100, 1, 99, 188, 5, '', 1000, 1, 1431571161, 722530751, 0, 0, 0, 0, '', 1431571182, 31, 0, 0, 151200000, 2, 1300, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(2, 'Vegetto Sample', 0, 1, 1, 1, 388, 250, 250, 0, 68, 76, 78, 39, 308, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1434354088, 722530751, 1, 4, 0, 0, '', 1434354249, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(3, 'Goku Sample', 0, 1, 1, 1, 1, 250, 250, 0, 68, 76, 78, 39, 2, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128794, 722530751, 1, 4, 0, 0, '', 1432128795, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(4, 'Vegeta Sample', 0, 1, 1, 1, 17, 250, 250, 0, 68, 76, 78, 39, 19, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128822, 722530751, 1, 4, 0, 0, '', 1432128823, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(5, 'Piccolo Sample', 0, 1, 1, 1, 32, 250, 250, 0, 68, 76, 78, 39, 33, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128808, 722530751, 1, 4, 0, 0, '', 1432128810, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(6, 'Dezessete Sample', 0, 1, 1, 1, 45, 250, 250, 0, 68, 76, 78, 39, 46, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128788, 722530751, 1, 4, 0, 0, '', 1432128789, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(7, 'Gohan Sample', 0, 1, 1, 1, 57, 250, 250, 0, 68, 76, 78, 39, 55, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128793, 722530751, 1, 4, 0, 0, '', 1432128794, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(8, 'Trunks Sample', 0, 1, 1, 1, 71, 250, 250, 0, 68, 76, 78, 39, 69, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128813, 722530751, 1, 4, 0, 0, '', 1432128815, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(9, 'Cell Sample', 0, 1, 1, 1, 83, 250, 250, 0, 68, 76, 78, 39, 81, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128780, 722530751, 1, 4, 0, 0, '', 1432128781, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(10, 'Freeza Sample', 0, 1, 1, 1, 95, 250, 250, 0, 68, 76, 78, 39, 88, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128791, 722530751, 1, 4, 0, 0, '', 1432128792, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(11, 'Majin Boo Sample', 0, 1, 1, 1, 111, 250, 250, 0, 68, 76, 78, 39, 98, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128805, 722530751, 1, 4, 0, 0, '', 1432128806, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(12, 'Broly Sample', 0, 1, 1, 1, 127, 250, 250, 0, 68, 76, 78, 39, 108, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128777, 722530751, 1, 4, 0, 0, '', 1432128778, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(13, 'Dezoito Sample', 0, 1, 1, 1, 140, 250, 250, 0, 68, 76, 78, 39, 46, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 0, 1432128790, 722530751, 1, 4, 0, 0, '', 1432128790, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(14, 'Uub Sample', 0, 1, 1, 1, 152, 250, 250, 0, 68, 76, 78, 39, 128, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128819, 722530751, 1, 4, 0, 0, '', 1432128821, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(15, 'Goten Sample', 0, 1, 1, 1, 164, 250, 250, 0, 68, 76, 78, 39, 135, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128797, 722530751, 1, 4, 0, 0, '', 1432128798, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(16, 'Chibi Trunks Sample', 0, 1, 1, 1, 178, 250, 250, 0, 68, 76, 78, 39, 149, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128782, 722530751, 1, 4, 0, 0, '', 1432128783, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(17, 'Cooler Sample', 0, 1, 1, 1, 192, 250, 250, 0, 68, 76, 78, 39, 153, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128783, 722530751, 1, 4, 0, 0, '', 1432128784, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(18, 'Dende Sample', 0, 1, 1, 1, 206, 250, 250, 0, 68, 76, 78, 39, 164, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128785, 722530751, 1, 4, 0, 0, '', 1432128786, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(19, 'Tsuful Sample', 0, 1, 1, 1, 218, 250, 250, 0, 68, 76, 78, 39, 175, 0, 0, 0, 250, 250, 0, 100, 1, 302, 399, 5, '', 400, 1, 1432128815, 722530751, 1, 4, 0, 0, '', 1432128816, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(20, 'Bardock Sample', 0, 1, 1, 1, 230, 250, 250, 0, 68, 76, 78, 39, 188, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128775, 722530751, 1, 4, 0, 0, '', 1432128776, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(21, 'Kuririn Sample', 0, 1, 1, 1, 244, 250, 250, 0, 68, 76, 78, 39, 200, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128803, 722530751, 1, 4, 0, 0, '', 1432128804, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(22, 'Pan Sample', 0, 1, 1, 1, 256, 250, 250, 0, 68, 76, 78, 39, 210, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 0, 1432128806, 722530751, 1, 4, 0, 0, '', 1432128807, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(23, 'Kaio Sample', 0, 1, 1, 1, 268, 250, 250, 0, 68, 76, 78, 39, 219, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128801, 722530751, 1, 4, 0, 0, '', 1432128802, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(24, 'Videl Sample', 0, 1, 1, 1, 280, 250, 250, 0, 68, 76, 78, 39, 227, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 0, 1432128824, 722530751, 1, 4, 0, 0, '', 1432128827, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(25, 'Janemba Sample', 0, 1, 1, 1, 292, 250, 250, 0, 68, 76, 78, 39, 234, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128798, 722530751, 1, 4, 0, 0, '', 1432128799, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(26, 'Tenshinhan Sample', 0, 1, 1, 1, 304, 250, 250, 0, 68, 76, 78, 39, 242, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128812, 722530751, 1, 4, 0, 0, '', 1432128813, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(27, 'Jenk Sample', 0, 1, 1, 1, 316, 250, 250, 0, 68, 76, 78, 39, 252, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128800, 722530751, 1, 4, 0, 0, '', 1432128801, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(28, 'Raditz Sample', 0, 1, 1, 1, 328, 250, 250, 0, 68, 76, 78, 39, 264, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128810, 722530751, 1, 4, 0, 0, '', 1432128811, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(29, 'Dezesseis Sample', 0, 1, 1, 1, 340, 250, 250, 0, 68, 76, 78, 39, 272, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128786, 722530751, 1, 4, 0, 0, '', 1432128787, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(30, 'Turles Sample', 0, 1, 1, 1, 352, 250, 250, 0, 68, 76, 78, 39, 280, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128817, 722530751, 1, 4, 0, 0, '', 1432128818, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(31, 'Bulma Sample', 0, 1, 1, 1, 364, 250, 250, 0, 68, 76, 78, 39, 292, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 0, 1432128779, 722530751, 1, 4, 0, 0, '', 1432128780, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(32, 'Zaiko Sample', 0, 1, 1, 1, 449, 250, 250, 0, 68, 76, 78, 39, 363, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128779, 722530751, 1, 4, 0, 0, '', 1432128780, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(33, 'Chiled Sample', 0, 1, 1, 1, 461, 250, 250, 0, 68, 76, 78, 39, 375, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 1432128779, 722530751, 1, 4, 0, 0, '', 1432128780, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 0, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(34, 'Shenron Sample', 0, 1, 1, 1, 376, 250, 250, 0, 68, 76, 78, 39, 302, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 0, 0, 1, 0, 0, 0, '', 0, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 1436243559, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(35, 'Tapion Sample', 0, 1, 1, 1, 400, 250, 250, 0, 68, 76, 78, 39, 316, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 0, 0, 1, 0, 0, 0, '', 0, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 1440294587, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(36, 'Kame Sample', 0, 1, 1, 1, 413, 250, 250, 0, 68, 76, 78, 39, 330, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 0, 0, 1, 0, 0, 0, '', 0, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 1440294605, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(37, 'King Vegeta Sample', 0, 1, 1, 1, 425, 250, 250, 0, 68, 76, 78, 39, 342, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 0, 0, 1, 0, 0, 0, '', 0, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 1440294634, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(38, 'Kagome Sample', 0, 1, 1, 1, 437, 250, 250, 0, 68, 76, 78, 39, 353, 0, 0, 0, 250, 250, 0, 100, 1, 302, 48, 5, '', 400, 1, 0, 0, 1, 0, 0, 0, '', 0, 0, 0, 0, 151200000, 2, 1500, 1000, 1000, 100, 1000, 0, 0, 0, 0, 0, '', 1440294644, 0, '', 1, 1, 1, 1, 1, '0', '', 43200, -1, 0, 0, '', 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
+--
+-- Acionadores `players`
+--
+DELIMITER $$
+CREATE TRIGGER `oncreate_players` AFTER INSERT ON `players` FOR EACH ROW BEGIN
+        INSERT INTO `player_skills` (`player_id`, `skillid`, `value`) VALUES (NEW.`id`, 0, 10);
+        INSERT INTO `player_skills` (`player_id`, `skillid`, `value`) VALUES (NEW.`id`, 1, 10);
+        INSERT INTO `player_skills` (`player_id`, `skillid`, `value`) VALUES (NEW.`id`, 2, 10);
+        INSERT INTO `player_skills` (`player_id`, `skillid`, `value`) VALUES (NEW.`id`, 3, 10);
+        INSERT INTO `player_skills` (`player_id`, `skillid`, `value`) VALUES (NEW.`id`, 4, 10);
+        INSERT INTO `player_skills` (`player_id`, `skillid`, `value`) VALUES (NEW.`id`, 5, 10);
+        INSERT INTO `player_skills` (`player_id`, `skillid`, `value`) VALUES (NEW.`id`, 6, 10);
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `ondelete_players` BEFORE DELETE ON `players` FOR EACH ROW BEGIN
+        DELETE FROM `bans` WHERE `type` IN (2, 5) AND `value` = OLD.`id`;
+        UPDATE `houses` SET `owner` = 0 WHERE `owner` = OLD.`id`;
+END
+$$
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_deaths`
+--
+
+CREATE TABLE `player_deaths` (
+  `id` int(11) NOT NULL,
+  `player_id` int(11) NOT NULL,
+  `date` bigint(20) UNSIGNED NOT NULL,
+  `level` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_depotitems`
+--
+
+CREATE TABLE `player_depotitems` (
+  `player_id` int(11) NOT NULL,
+  `sid` int(11) NOT NULL COMMENT 'any given range, eg. 0-100 is reserved for depot lockers and all above 100 will be normal items inside depots',
+  `pid` int(11) NOT NULL DEFAULT '0',
+  `itemtype` int(11) NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `attributes` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_inboxitems`
+--
+
+CREATE TABLE `player_inboxitems` (
+  `player_id` int(11) NOT NULL,
+  `sid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL DEFAULT '0',
+  `itemtype` smallint(6) NOT NULL,
+  `count` smallint(5) NOT NULL DEFAULT '0',
+  `attributes` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_items`
+--
+
+CREATE TABLE `player_items` (
+  `player_id` int(11) NOT NULL DEFAULT '0',
+  `pid` int(11) NOT NULL DEFAULT '0',
+  `sid` int(11) NOT NULL DEFAULT '0',
+  `itemtype` int(11) NOT NULL DEFAULT '0',
+  `count` int(11) NOT NULL DEFAULT '0',
+  `attributes` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_killers`
+--
+
+CREATE TABLE `player_killers` (
+  `kill_id` int(11) NOT NULL,
+  `player_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_namelocks`
+--
+
+CREATE TABLE `player_namelocks` (
+  `player_id` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(255) NOT NULL,
+  `new_name` varchar(255) NOT NULL,
+  `date` bigint(20) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_skills`
+--
+
+CREATE TABLE `player_skills` (
+  `player_id` int(11) NOT NULL DEFAULT '0',
+  `skillid` tinyint(2) NOT NULL DEFAULT '0',
+  `value` int(10) UNSIGNED NOT NULL DEFAULT '0',
+  `count` int(10) UNSIGNED NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `player_skills`
+--
+
+INSERT INTO `player_skills` (`player_id`, `skillid`, `value`, `count`) VALUES
+(1, 0, 10, 0),
+(1, 1, 10, 0),
+(1, 2, 10, 0),
+(1, 3, 10, 0),
+(1, 4, 10, 0),
+(1, 5, 10, 0),
+(1, 6, 10, 0),
+(2, 0, 10, 0),
+(2, 1, 10, 0),
+(2, 2, 10, 0),
+(2, 3, 10, 0),
+(2, 4, 10, 0),
+(2, 5, 10, 0),
+(2, 6, 10, 0),
+(3, 0, 10, 0),
+(3, 1, 10, 0),
+(3, 2, 10, 0),
+(3, 3, 10, 0),
+(3, 4, 10, 0),
+(3, 5, 10, 0),
+(3, 6, 10, 0),
+(4, 0, 10, 0),
+(4, 1, 10, 0),
+(4, 2, 10, 0),
+(4, 3, 10, 0),
+(4, 4, 10, 0),
+(4, 5, 10, 0),
+(4, 6, 10, 0),
+(5, 0, 10, 0),
+(5, 1, 10, 0),
+(5, 2, 10, 0),
+(5, 3, 10, 0),
+(5, 4, 10, 0),
+(5, 5, 10, 0),
+(5, 6, 10, 0),
+(6, 0, 10, 0),
+(6, 1, 10, 0),
+(6, 2, 10, 0),
+(6, 3, 10, 0),
+(6, 4, 10, 0),
+(6, 5, 10, 0),
+(6, 6, 10, 0),
+(7, 0, 10, 0),
+(7, 1, 10, 0),
+(7, 2, 10, 0),
+(7, 3, 10, 0),
+(7, 4, 10, 0),
+(7, 5, 10, 0),
+(7, 6, 10, 0),
+(8, 0, 10, 0),
+(8, 1, 10, 0),
+(8, 2, 10, 0),
+(8, 3, 10, 0),
+(8, 4, 10, 0),
+(8, 5, 10, 0),
+(8, 6, 10, 0),
+(9, 0, 10, 0),
+(9, 1, 10, 0),
+(9, 2, 10, 0),
+(9, 3, 10, 0),
+(9, 4, 10, 0),
+(9, 5, 10, 0),
+(9, 6, 10, 0),
+(10, 0, 10, 0),
+(10, 1, 10, 0),
+(10, 2, 10, 0),
+(10, 3, 10, 0),
+(10, 4, 10, 0),
+(10, 5, 10, 0),
+(10, 6, 10, 0),
+(11, 0, 10, 0),
+(11, 1, 10, 0),
+(11, 2, 10, 0),
+(11, 3, 10, 0),
+(11, 4, 10, 0),
+(11, 5, 10, 0),
+(11, 6, 10, 0),
+(12, 0, 10, 0),
+(12, 1, 10, 0),
+(12, 2, 10, 0),
+(12, 3, 10, 0),
+(12, 4, 10, 0),
+(12, 5, 10, 0),
+(12, 6, 10, 0),
+(13, 0, 10, 0),
+(13, 1, 10, 0),
+(13, 2, 10, 0),
+(13, 3, 10, 0),
+(13, 4, 10, 0),
+(13, 5, 10, 0),
+(13, 6, 10, 0),
+(14, 0, 10, 0),
+(14, 1, 10, 0),
+(14, 2, 10, 0),
+(14, 3, 10, 0),
+(14, 4, 10, 0),
+(14, 5, 10, 0),
+(14, 6, 10, 0),
+(15, 0, 10, 0),
+(15, 1, 10, 0),
+(15, 2, 10, 0),
+(15, 3, 10, 0),
+(15, 4, 10, 0),
+(15, 5, 10, 0),
+(15, 6, 10, 0),
+(16, 0, 10, 0),
+(16, 1, 10, 0),
+(16, 2, 10, 0),
+(16, 3, 10, 0),
+(16, 4, 10, 0),
+(16, 5, 10, 0),
+(16, 6, 10, 0),
+(17, 0, 10, 0),
+(17, 1, 10, 0),
+(17, 2, 10, 0),
+(17, 3, 10, 0),
+(17, 4, 10, 0),
+(17, 5, 10, 0),
+(17, 6, 10, 0),
+(18, 0, 10, 0),
+(18, 1, 10, 0),
+(18, 2, 10, 0),
+(18, 3, 10, 0),
+(18, 4, 10, 0),
+(18, 5, 10, 0),
+(18, 6, 10, 0),
+(19, 0, 10, 0),
+(19, 1, 10, 0),
+(19, 2, 10, 0),
+(19, 3, 10, 0),
+(19, 4, 10, 0),
+(19, 5, 10, 0),
+(19, 6, 10, 0),
+(20, 0, 10, 0),
+(20, 1, 10, 0),
+(20, 2, 10, 0),
+(20, 3, 10, 0),
+(20, 4, 10, 0),
+(20, 5, 10, 0),
+(20, 6, 10, 0),
+(21, 0, 10, 0),
+(21, 1, 10, 0),
+(21, 2, 10, 0),
+(21, 3, 10, 0),
+(21, 4, 10, 0),
+(21, 5, 10, 0),
+(21, 6, 10, 0),
+(22, 0, 10, 0),
+(22, 1, 10, 0),
+(22, 2, 10, 0),
+(22, 3, 10, 0),
+(22, 4, 10, 0),
+(22, 5, 10, 0),
+(22, 6, 10, 0),
+(23, 0, 10, 0),
+(23, 1, 10, 0),
+(23, 2, 10, 0),
+(23, 3, 10, 0),
+(23, 4, 10, 0),
+(23, 5, 10, 0),
+(23, 6, 10, 0),
+(24, 0, 10, 0),
+(24, 1, 10, 0),
+(24, 2, 10, 0),
+(24, 3, 10, 0),
+(24, 4, 10, 0),
+(24, 5, 10, 0),
+(24, 6, 10, 0),
+(25, 0, 10, 0),
+(25, 1, 10, 0),
+(25, 2, 10, 0),
+(25, 3, 10, 0),
+(25, 4, 10, 0),
+(25, 5, 10, 0),
+(25, 6, 10, 0),
+(26, 0, 10, 0),
+(26, 1, 10, 0),
+(26, 2, 10, 0),
+(26, 3, 10, 0),
+(26, 4, 10, 0),
+(26, 5, 10, 0),
+(26, 6, 10, 0),
+(27, 0, 10, 0),
+(27, 1, 10, 0),
+(27, 2, 10, 0),
+(27, 3, 10, 0),
+(27, 4, 10, 0),
+(27, 5, 10, 0),
+(27, 6, 10, 0),
+(28, 0, 10, 0),
+(28, 1, 10, 0),
+(28, 2, 10, 0),
+(28, 3, 10, 0),
+(28, 4, 10, 0),
+(28, 5, 10, 0),
+(28, 6, 10, 0),
+(29, 0, 10, 0),
+(29, 1, 10, 0),
+(29, 2, 10, 0),
+(29, 3, 10, 0),
+(29, 4, 10, 0),
+(29, 5, 10, 0),
+(29, 6, 10, 0),
+(30, 0, 10, 0),
+(30, 1, 10, 0),
+(30, 2, 10, 0),
+(30, 3, 10, 0),
+(30, 4, 10, 0),
+(30, 5, 10, 0),
+(30, 6, 10, 0),
+(31, 0, 10, 0),
+(31, 1, 10, 0),
+(31, 2, 10, 0),
+(31, 3, 10, 0),
+(31, 4, 10, 0),
+(31, 5, 10, 0),
+(31, 6, 10, 0),
+(32, 0, 10, 0),
+(32, 1, 10, 0),
+(32, 2, 10, 0),
+(32, 3, 10, 0),
+(32, 4, 10, 0),
+(32, 5, 10, 0),
+(32, 6, 10, 0),
+(33, 0, 10, 0),
+(33, 1, 10, 0),
+(33, 2, 10, 0),
+(33, 3, 10, 0),
+(33, 4, 10, 0),
+(33, 5, 10, 0),
+(33, 6, 10, 0),
+(34, 0, 10, 0),
+(34, 1, 10, 0),
+(34, 2, 10, 0),
+(34, 3, 10, 0),
+(34, 4, 10, 0),
+(34, 5, 10, 0),
+(34, 6, 10, 0),
+(35, 0, 10, 0),
+(35, 1, 10, 0),
+(35, 2, 10, 0),
+(35, 3, 10, 0),
+(35, 4, 10, 0),
+(35, 5, 10, 0),
+(35, 6, 10, 0),
+(36, 0, 10, 0),
+(36, 1, 10, 0),
+(36, 2, 10, 0),
+(36, 3, 10, 0),
+(36, 4, 10, 0),
+(36, 5, 10, 0),
+(36, 6, 10, 0),
+(37, 0, 10, 0),
+(37, 1, 10, 0),
+(37, 2, 10, 0),
+(37, 3, 10, 0),
+(37, 4, 10, 0),
+(37, 5, 10, 0),
+(37, 6, 10, 0),
+(38, 0, 10, 0),
+(38, 1, 10, 0),
+(38, 2, 10, 0),
+(38, 3, 10, 0),
+(38, 4, 10, 0),
+(38, 5, 10, 0),
+(38, 6, 10, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_spells`
+--
+
+CREATE TABLE `player_spells` (
+  `player_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_statements`
+--
+
+CREATE TABLE `player_statements` (
+  `id` int(11) NOT NULL,
+  `player_id` int(11) NOT NULL,
+  `channel_id` int(11) NOT NULL DEFAULT '0',
+  `text` varchar(255) NOT NULL,
+  `date` bigint(20) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_storage`
+--
+
+CREATE TABLE `player_storage` (
+  `player_id` int(11) NOT NULL DEFAULT '0',
+  `key` varchar(32) NOT NULL DEFAULT '0',
+  `value` varchar(255) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `player_viplist`
+--
+
+CREATE TABLE `player_viplist` (
+  `player_id` int(11) NOT NULL,
+  `vip_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `poll`
+--
+
+CREATE TABLE `poll` (
+  `id` int(11) NOT NULL,
+  `question` varchar(150) DEFAULT NULL,
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `date_start` datetime DEFAULT NULL,
+  `date_end` datetime DEFAULT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `poll_answer`
+--
+
+CREATE TABLE `poll_answer` (
+  `id` int(11) NOT NULL,
+  `poll_id` int(11) NOT NULL,
+  `answer` varchar(150) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `poll_votes`
+--
+
+CREATE TABLE `poll_votes` (
+  `id` int(11) NOT NULL,
+  `answer_id` int(11) DEFAULT NULL,
+  `poll_id` int(11) DEFAULT NULL,
+  `account_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `posts`
+--
+
+CREATE TABLE `posts` (
+  `id` int(11) NOT NULL,
+  `title` varchar(120) DEFAULT NULL,
+  `text` text,
+  `time` int(11) DEFAULT NULL,
+  `author` varchar(64) DEFAULT NULL,
+  `board_id` int(11) DEFAULT NULL,
+  `thread_id` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `server_config`
+--
+
+CREATE TABLE `server_config` (
+  `config` varchar(35) NOT NULL DEFAULT '',
+  `value` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `server_config`
+--
+
+INSERT INTO `server_config` (`config`, `value`) VALUES
+('db_version', '26'),
+('encryption', '2'),
+('vahash_key', 'E74N-LS3L-3S5T-3L68');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `server_motd`
+--
+
+CREATE TABLE `server_motd` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `text` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `server_motd`
+--
+
+INSERT INTO `server_motd` (`id`, `world_id`, `text`) VALUES
+(8, 0, 'Bem-vindo ao WODBO WARS, divirta-se!');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `server_record`
+--
+
+CREATE TABLE `server_record` (
+  `record` int(11) NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `timestamp` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `server_reports`
+--
+
+CREATE TABLE `server_reports` (
+  `id` int(11) NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `player_id` int(11) NOT NULL DEFAULT '1',
+  `posx` int(11) NOT NULL DEFAULT '0',
+  `posy` int(11) NOT NULL DEFAULT '0',
+  `posz` int(11) NOT NULL DEFAULT '0',
+  `timestamp` bigint(20) NOT NULL DEFAULT '0',
+  `report` text NOT NULL,
+  `reads` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `shop_donation_history`
+--
+
+CREATE TABLE `shop_donation_history` (
+  `id` int(11) NOT NULL,
+  `method` varchar(256) NOT NULL,
+  `receiver` varchar(256) NOT NULL,
+  `buyer` varchar(256) NOT NULL,
+  `account` varchar(256) NOT NULL,
+  `points` int(11) NOT NULL,
+  `date` int(10) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `shop_history`
+--
+
+CREATE TABLE `shop_history` (
+  `id` int(11) NOT NULL,
+  `product` int(11) NOT NULL,
+  `session` varchar(256) NOT NULL,
+  `player` varchar(256) NOT NULL,
+  `date` int(10) NOT NULL,
+  `processed` int(11) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `shop_offer`
+--
+
+CREATE TABLE `shop_offer` (
+  `id` int(11) NOT NULL,
+  `points` int(11) NOT NULL DEFAULT '0',
+  `category` int(11) NOT NULL DEFAULT '1',
+  `type` int(11) NOT NULL DEFAULT '1',
+  `item` int(11) NOT NULL DEFAULT '0',
+  `count` int(11) NOT NULL DEFAULT '0',
+  `description` text NOT NULL,
+  `name` varchar(256) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Extraindo dados da tabela `shop_offer`
+--
+
+INSERT INTO `shop_offer` (`id`, `points`, `category`, `type`, `item`, `count`, `description`, `name`) VALUES
+(6, 2, 1, 5, 7440, 1, 'Remove todos os frags de seu personagem.', 'Removedor De Frags'),
+(5, 2, 1, 2, 0, 0, 'Remove o skull do seu personagem.', 'Remover Skull'),
+(1, 5, 1, 4, 0, 0, 'Troque o nome do seu personagem.', 'Mudar Nome'),
+(7, 15, 1, 3, 0, 0, 'Remove o ban da sua conta nÃ£o importando a quantidade de dias.', 'Remover Ban Da Conta'),
+(16, 30, 1, 5, 13492, 1, 'Essa vocation e muito poderosa , e vai ajudar bastante no pvp ..', 'VOC (BILLS)'),
+(17, 10, 2, 5, 2476, 1, 'You see a Bills Armor (Arm:370, club fighting +10, sword fighting +10, axe fighting +10, distance fighting +10, shielding +10, faster regeneration).\r\nIt weighs 50.00 oz.\r\nHealth and KI Regeneration +15500/s', 'Bills Armor'),
+(18, 25, 2, 5, 2477, 1, 'Legs Poderosa Kilevel +23', 'Bills Legs'),
+(19, 10, 2, 5, 2475, 1, 'You see Bills boots (Arm:100, faster regeneration).\r\nIt weighs 5.00 oz.\r\nHealth and KI Regeneration +9000/s', 'Bills Boots'),
+(34, 10, 2, 5, 2008, 1, 'Esse item dobra sua exp por 2 horas , mesmo que morra continua contando na sua tela vale muito a pena comprar.', 'Exp Double'),
+(35, 10, 2, 5, 8303, 1, 'Refina sua arma ,com +4 de attack exemplo (GOLDEN GLOVES ATK :25 +1 fica ATK 29 ) esse item e de grande importancia na sua arma ele pode ficar ate +10 , porem tem chanse de quebrar o refiner , mas jamais quebara seu item.', 'Upgrade refiner'),
+(36, 10, 2, 5, 12759, 1, 'Protect All 10%.', 'Earring Of Magic'),
+(38, 10, 2, 5, 12289, 1, 'Recupera toda a Stamina.', 'Stamina Potion'),
+(37, 20, 2, 5, 10220, 1, 'Protect All 10%.', 'Leviathans Amulet'),
+(40, 10, 2, 5, 2547, 1, 'Senzu Vip infinita , para melhor defender as pancadas do adversario', 'Wars Vip Senzu'),
+(41, 15, 2, 5, 2392, 1, 'Sword wars vip .. com 2 attacks interno nela fire e damage.', 'Wars Sword Vip');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `threads`
+--
+
+CREATE TABLE `threads` (
+  `id` int(11) NOT NULL,
+  `name` varchar(120) DEFAULT NULL,
+  `sticked` tinyint(1) DEFAULT NULL,
+  `closed` tinyint(1) DEFAULT NULL,
+  `author` varchar(64) DEFAULT NULL,
+  `time` int(11) DEFAULT NULL,
+  `board_id` int(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tiles`
+--
+
+CREATE TABLE `tiles` (
+  `id` int(11) NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `house_id` int(10) UNSIGNED NOT NULL,
+  `x` int(5) UNSIGNED NOT NULL,
+  `y` int(5) UNSIGNED NOT NULL,
+  `z` tinyint(2) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tile_items`
+--
+
+CREATE TABLE `tile_items` (
+  `tile_id` int(10) UNSIGNED NOT NULL,
+  `world_id` tinyint(2) UNSIGNED NOT NULL DEFAULT '0',
+  `sid` int(11) NOT NULL,
+  `pid` int(11) NOT NULL DEFAULT '0',
+  `itemtype` int(11) NOT NULL,
+  `count` int(11) NOT NULL DEFAULT '0',
+  `attributes` blob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tile_store`
+--
+
+CREATE TABLE `tile_store` (
+  `house_id` int(10) UNSIGNED NOT NULL,
+  `world_id` tinyint(4) UNSIGNED NOT NULL DEFAULT '0',
+  `data` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `videos`
+--
+
+CREATE TABLE `videos` (
+  `id` int(11) NOT NULL,
+  `author` int(11) DEFAULT NULL,
+  `title` varchar(120) DEFAULT NULL,
+  `description` tinytext,
+  `youtube` varchar(45) DEFAULT NULL,
+  `views` int(11) DEFAULT NULL,
+  `time` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `video_comments`
+--
+
+CREATE TABLE `video_comments` (
+  `id` int(10) NOT NULL,
+  `author` int(11) DEFAULT NULL,
+  `video` int(11) DEFAULT NULL,
+  `time` int(11) DEFAULT NULL,
+  `text` tinytext
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `accounts`
+--
+ALTER TABLE `accounts`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`),
+  ADD KEY `id` (`id`);
+
+--
+-- Indexes for table `account_viplist`
+--
+ALTER TABLE `account_viplist`
+  ADD UNIQUE KEY `account_id_2` (`account_id`,`player_id`),
+  ADD KEY `account_id` (`account_id`),
+  ADD KEY `player_id` (`player_id`),
+  ADD KEY `world_id` (`world_id`);
+
+--
+-- Indexes for table `bans`
+--
+ALTER TABLE `bans`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `type` (`type`,`value`),
+  ADD KEY `active` (`active`);
+
+--
+-- Indexes for table `bugtracker`
+--
+ALTER TABLE `bugtracker`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `author` (`author`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `news_id` (`news_id`),
+  ADD KEY `author` (`author`);
+
+--
+-- Indexes for table `environment_killers`
+--
+ALTER TABLE `environment_killers`
+  ADD KEY `kill_id` (`kill_id`);
+
+--
+-- Indexes for table `forums`
+--
+ALTER TABLE `forums`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `friends`
+--
+ALTER TABLE `friends`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `with` (`with`),
+  ADD KEY `friend` (`friend`);
+
+--
+-- Indexes for table `global_storage`
+--
+ALTER TABLE `global_storage`
+  ADD UNIQUE KEY `key` (`key`,`world_id`),
+  ADD UNIQUE KEY `key_2` (`key`,`world_id`),
+  ADD UNIQUE KEY `key_3` (`key`,`world_id`),
+  ADD UNIQUE KEY `key_4` (`key`,`world_id`);
+
+--
+-- Indexes for table `guilds`
+--
+ALTER TABLE `guilds`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`,`world_id`),
+  ADD UNIQUE KEY `name_2` (`name`,`world_id`),
+  ADD UNIQUE KEY `name_3` (`name`,`world_id`),
+  ADD UNIQUE KEY `name_4` (`name`,`world_id`);
+
+--
+-- Indexes for table `guild_invites`
+--
+ALTER TABLE `guild_invites`
+  ADD UNIQUE KEY `player_id` (`player_id`,`guild_id`),
+  ADD KEY `guild_id` (`guild_id`);
+
+--
+-- Indexes for table `guild_kills`
+--
+ALTER TABLE `guild_kills`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `guild_kills_ibfk_1` (`war_id`),
+  ADD KEY `guild_kills_ibfk_2` (`death_id`),
+  ADD KEY `guild_kills_ibfk_3` (`guild_id`);
+
+--
+-- Indexes for table `guild_ranks`
+--
+ALTER TABLE `guild_ranks`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `guild_id` (`guild_id`);
+
+--
+-- Indexes for table `guild_wars`
+--
+ALTER TABLE `guild_wars`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `status` (`status`),
+  ADD KEY `guild_id` (`guild_id`),
+  ADD KEY `enemy_id` (`enemy_id`);
+
+--
+-- Indexes for table `houses`
+--
+ALTER TABLE `houses`
+  ADD UNIQUE KEY `id` (`id`,`world_id`),
+  ADD UNIQUE KEY `id_2` (`id`,`world_id`),
+  ADD UNIQUE KEY `id_3` (`id`,`world_id`),
+  ADD UNIQUE KEY `id_4` (`id`,`world_id`);
+
+--
+-- Indexes for table `house_auctions`
+--
+ALTER TABLE `house_auctions`
+  ADD UNIQUE KEY `house_id` (`house_id`,`world_id`),
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `house_data`
+--
+ALTER TABLE `house_data`
+  ADD UNIQUE KEY `house_id` (`house_id`,`world_id`);
+
+--
+-- Indexes for table `house_lists`
+--
+ALTER TABLE `house_lists`
+  ADD UNIQUE KEY `house_id` (`house_id`,`world_id`,`listid`),
+  ADD UNIQUE KEY `house_id_2` (`house_id`,`world_id`,`listid`),
+  ADD UNIQUE KEY `house_id_3` (`house_id`,`world_id`,`listid`),
+  ADD UNIQUE KEY `house_id_4` (`house_id`,`world_id`,`listid`);
+
+--
+-- Indexes for table `killers`
+--
+ALTER TABLE `killers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `death_id` (`death_id`);
+
+--
+-- Indexes for table `login_history`
+--
+ALTER TABLE `login_history`
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `lottery`
+--
+ALTER TABLE `lottery`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `market_history`
+--
+ALTER TABLE `market_history`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `player_id` (`player_id`,`sale`);
+
+--
+-- Indexes for table `market_offers`
+--
+ALTER TABLE `market_offers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sale` (`sale`,`itemtype`),
+  ADD KEY `created` (`created`),
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `from` (`from`),
+  ADD KEY `to` (`to`);
+
+--
+-- Indexes for table `news`
+--
+ALTER TABLE `news`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `newsticker`
+--
+ALTER TABLE `newsticker`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `players`
+--
+ALTER TABLE `players`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`,`deleted`),
+  ADD KEY `account_id` (`account_id`),
+  ADD KEY `online` (`online`),
+  ADD KEY `deleted` (`deleted`);
+
+--
+-- Indexes for table `player_deaths`
+--
+ALTER TABLE `player_deaths`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `player_id` (`player_id`),
+  ADD KEY `date` (`date`);
+
+--
+-- Indexes for table `player_depotitems`
+--
+ALTER TABLE `player_depotitems`
+  ADD UNIQUE KEY `player_id_2` (`player_id`,`sid`),
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `player_inboxitems`
+--
+ALTER TABLE `player_inboxitems`
+  ADD UNIQUE KEY `player_id_2` (`player_id`,`sid`),
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `player_items`
+--
+ALTER TABLE `player_items`
+  ADD UNIQUE KEY `player_id_2` (`player_id`,`sid`),
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `player_killers`
+--
+ALTER TABLE `player_killers`
+  ADD KEY `kill_id` (`kill_id`),
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `player_namelocks`
+--
+ALTER TABLE `player_namelocks`
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `player_skills`
+--
+ALTER TABLE `player_skills`
+  ADD UNIQUE KEY `player_id_2` (`player_id`,`skillid`),
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `player_spells`
+--
+ALTER TABLE `player_spells`
+  ADD UNIQUE KEY `player_id_2` (`player_id`,`name`),
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `player_statements`
+--
+ALTER TABLE `player_statements`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `player_id` (`player_id`),
+  ADD KEY `channel_id` (`channel_id`);
+
+--
+-- Indexes for table `player_storage`
+--
+ALTER TABLE `player_storage`
+  ADD UNIQUE KEY `player_id_2` (`player_id`,`key`),
+  ADD KEY `player_id` (`player_id`);
+
+--
+-- Indexes for table `player_viplist`
+--
+ALTER TABLE `player_viplist`
+  ADD UNIQUE KEY `player_id_2` (`player_id`,`vip_id`),
+  ADD KEY `player_id` (`player_id`),
+  ADD KEY `vip_id` (`vip_id`);
+
+--
+-- Indexes for table `poll`
+--
+ALTER TABLE `poll`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `question` (`question`);
+
+--
+-- Indexes for table `poll_answer`
+--
+ALTER TABLE `poll_answer`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `poll_id` (`poll_id`);
+
+--
+-- Indexes for table `poll_votes`
+--
+ALTER TABLE `poll_votes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `answer_id` (`answer_id`),
+  ADD KEY `poll_id` (`poll_id`),
+  ADD KEY `account_id` (`account_id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `board_id` (`board_id`),
+  ADD KEY `thread_id` (`thread_id`);
+
+--
+-- Indexes for table `server_config`
+--
+ALTER TABLE `server_config`
+  ADD UNIQUE KEY `config` (`config`);
+
+--
+-- Indexes for table `server_motd`
+--
+ALTER TABLE `server_motd`
+  ADD UNIQUE KEY `id` (`id`,`world_id`),
+  ADD UNIQUE KEY `id_2` (`id`,`world_id`),
+  ADD UNIQUE KEY `id_3` (`id`,`world_id`),
+  ADD UNIQUE KEY `id_4` (`id`,`world_id`);
+
+--
+-- Indexes for table `server_record`
+--
+ALTER TABLE `server_record`
+  ADD UNIQUE KEY `record` (`record`,`world_id`,`timestamp`),
+  ADD UNIQUE KEY `timestamp` (`timestamp`,`record`,`world_id`),
+  ADD UNIQUE KEY `timestamp_2` (`timestamp`,`record`,`world_id`),
+  ADD UNIQUE KEY `timestamp_3` (`timestamp`,`record`,`world_id`);
+
+--
+-- Indexes for table `server_reports`
+--
+ALTER TABLE `server_reports`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `world_id` (`world_id`),
+  ADD KEY `reads` (`reads`),
+  ADD KEY `player_id` (`player_id`),
+  ADD KEY `world_id_2` (`world_id`),
+  ADD KEY `world_id_3` (`world_id`),
+  ADD KEY `world_id_4` (`world_id`);
+
+--
+-- Indexes for table `shop_donation_history`
+--
+ALTER TABLE `shop_donation_history`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `shop_history`
+--
+ALTER TABLE `shop_history`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `shop_offer`
+--
+ALTER TABLE `shop_offer`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `threads`
+--
+ALTER TABLE `threads`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `board_id` (`board_id`);
+
+--
+-- Indexes for table `tiles`
+--
+ALTER TABLE `tiles`
+  ADD UNIQUE KEY `id` (`id`,`world_id`),
+  ADD UNIQUE KEY `id_2` (`id`,`world_id`),
+  ADD UNIQUE KEY `id_3` (`id`,`world_id`),
+  ADD UNIQUE KEY `id_4` (`id`,`world_id`),
+  ADD KEY `x` (`x`,`y`,`z`),
+  ADD KEY `house_id` (`house_id`,`world_id`),
+  ADD KEY `x_2` (`x`,`y`,`z`),
+  ADD KEY `x_3` (`x`,`y`,`z`),
+  ADD KEY `x_4` (`x`,`y`,`z`);
+
+--
+-- Indexes for table `tile_items`
+--
+ALTER TABLE `tile_items`
+  ADD UNIQUE KEY `tile_id` (`tile_id`,`world_id`,`sid`),
+  ADD UNIQUE KEY `tile_id_2` (`tile_id`,`world_id`,`sid`),
+  ADD UNIQUE KEY `tile_id_3` (`tile_id`,`world_id`,`sid`),
+  ADD UNIQUE KEY `tile_id_4` (`tile_id`,`world_id`,`sid`),
+  ADD KEY `sid` (`sid`),
+  ADD KEY `sid_2` (`sid`),
+  ADD KEY `sid_3` (`sid`),
+  ADD KEY `sid_4` (`sid`);
+
+--
+-- Indexes for table `tile_store`
+--
+ALTER TABLE `tile_store`
+  ADD KEY `house_id` (`house_id`);
+
+--
+-- Indexes for table `videos`
+--
+ALTER TABLE `videos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `author` (`author`);
+
+--
+-- Indexes for table `video_comments`
+--
+ALTER TABLE `video_comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `video` (`video`),
+  ADD KEY `author` (`author`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `accounts`
+--
+ALTER TABLE `accounts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+
+--
+-- AUTO_INCREMENT for table `bans`
+--
+ALTER TABLE `bans`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `bugtracker`
+--
+ALTER TABLE `bugtracker`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `forums`
+--
+ALTER TABLE `forums`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `friends`
+--
+ALTER TABLE `friends`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `guilds`
+--
+ALTER TABLE `guilds`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `guild_kills`
+--
+ALTER TABLE `guild_kills`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `guild_ranks`
+--
+ALTER TABLE `guild_ranks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `guild_wars`
+--
+ALTER TABLE `guild_wars`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `killers`
+--
+ALTER TABLE `killers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `lottery`
+--
+ALTER TABLE `lottery`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `market_history`
+--
+ALTER TABLE `market_history`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `market_offers`
+--
+ALTER TABLE `market_offers`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `news`
+--
+ALTER TABLE `news`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `newsticker`
+--
+ALTER TABLE `newsticker`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `players`
+--
+ALTER TABLE `players`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=201;
+
+--
+-- AUTO_INCREMENT for table `player_deaths`
+--
+ALTER TABLE `player_deaths`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `player_statements`
+--
+ALTER TABLE `player_statements`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `poll`
+--
+ALTER TABLE `poll`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `poll_answer`
+--
+ALTER TABLE `poll_answer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `poll_votes`
+--
+ALTER TABLE `poll_votes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `server_reports`
+--
+ALTER TABLE `server_reports`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `shop_donation_history`
+--
+ALTER TABLE `shop_donation_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `shop_history`
+--
+ALTER TABLE `shop_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `shop_offer`
+--
+ALTER TABLE `shop_offer`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5944;
+
+--
+-- AUTO_INCREMENT for table `threads`
+--
+ALTER TABLE `threads`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `videos`
+--
+ALTER TABLE `videos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+
+-- AUTO_INCREMENT for table `video_comments`
+--
+ALTER TABLE `video_comments`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Limitadores para a tabela `guild_invites`
+--
+ALTER TABLE `guild_invites`
+  ADD CONSTRAINT `guild_invites_ibfk_1` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `guild_invites_ibfk_2` FOREIGN KEY (`guild_id`) REFERENCES `guilds` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `guild_invites_ibfk_3` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `guild_invites_ibfk_4` FOREIGN KEY (`guild_id`) REFERENCES `guilds` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `guild_invites_ibfk_5` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `guild_invites_ibfk_6` FOREIGN KEY (`guild_id`) REFERENCES `guilds` (`id`) ON DELETE CASCADE;
+
+--
+-- Limitadores para a tabela `login_history`
+--
+ALTER TABLE `login_history`
+  ADD CONSTRAINT `login_history_ibfk_1` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`);
+
+--
+-- Limitadores para a tabela `market_history`
+--
+ALTER TABLE `market_history`
+  ADD CONSTRAINT `market_history_ibfk_1` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE;
+
+--
+-- Limitadores para a tabela `market_offers`
+--
+ALTER TABLE `market_offers`
+  ADD CONSTRAINT `market_offers_ibfk_1` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE;
+
+--
+-- Limitadores para a tabela `player_deaths`
+--
+ALTER TABLE `player_deaths`
+  ADD CONSTRAINT `player_deaths_ibfk_1` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE;
+
+--
+-- Limitadores para a tabela `player_inboxitems`
+--
+ALTER TABLE `player_inboxitems`
+  ADD CONSTRAINT `player_inboxitems_ibfk_1` FOREIGN KEY (`player_id`) REFERENCES `players` (`id`) ON DELETE CASCADE;
+COMMIT;

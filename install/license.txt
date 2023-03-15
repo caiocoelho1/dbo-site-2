@@ -1,0 +1,166 @@
+﻿0. Definições.
+"Esta Licença" refere-se a versão 3 da GNU General Public License.
+
+"Copyright" também significa direitos autorais como as leis que se aplicam a outros tipos de obras, tais como máscaras de semicondutores.
+
+"O Programa" refere-se a qualquer obra intelectual licenciado sob esta Licença. Cada licenciado é mencionado como "você". "Licenciados" e "receptores" podem ser indivíduos ou organizações.
+
+Para "modificar" uma obra significa copiar ou adaptar o todo ou parte do trabalho de uma maneira que requeira permissão de copyright, com excepção da realização de uma cópia exata. O trabalho resultante é chamado de "versão modificada" da obra anterior ou uma obra "baseada" na obra anterior.
+
+Uma "obra coberta" significa tanto o Programa inalterado ou um trabalho baseado no Programa.
+
+"Propagar" uma obra significa fazer qualquer coisa com ele que, sem permissão, lhe tornaria diretamente ou indiretamente responsável em infringir sob lei de direitos autorais aplicável, excepto executá-lo em um computador ou modificar uma cópia privada. Propagação inclui cópia, distribuição (com ou sem modificação), disponibilização ao público, e em alguns países, outras atividades também.
+
+Para "transmitir" uma obra significa qualquer tipo de propagação que permita a outros criar ou receber cópias. Mera interação com o usuário através de uma rede de computadores, sem transferência de uma cópia, não está transmitindo.
+
+Uma interface de usuário apresenta "Observações Legais Apropriadas" na medida em que inclui uma característica conveniente e proeminente visível que (1) exibe uma nota de copyright apropriada, e (2) informa ao usuário que não há nenhuma garantia para o trabalho (exceto para Na medida em que as garantias são fornecidas), que os licenciados podem transmitir o trabalho sob esta Licença, e como ver uma cópia desta Licença. Se a interface apresenta uma lista de comandos do usuário ou de opções, tal como um menu, um item de destaque na lista atende a esse critério.
+
+1. Código-fonte.
+O "código fonte" para um trabalho significa a forma preferida do trabalho para se fazer modificações. "Código objeto", qualquer forma não-fonte de um trabalho.
+
+Uma "Interface Padrão" significa uma interface que é um padrão oficial definido por um organismo de normalização reconhecido, ou, no caso de interfaces especificadas para uma linguagem de programação particular, uma que é amplamente utilizado entre os desenvolvedores que trabalham nessa linguagem.
+
+As "Bibliotecas de Sistema" de uma obra executável incluem qualquer coisa, além do trabalho como um todo, que (a) está incluído na forma normal de empacotamento um componente importante, mas que não faz parte do Componente Principal, e (b) serve apenas para permitir a utilização da obra com o Componente Principal, ou para implementar uma interface padrão para o qual uma implementação está disponível ao público em forma de código fonte. A "Componente Principal", neste contexto, significa um importante componente essencial (kernel, sistema de janelas, e assim por diante) do sistema operacional específico (se houver) na qual o trabalho executável corre, ou um compilador usado para produzir o trabalho, ou um intérprete do código objeto usado para executá-lo.
+
+O "Fonte Correspondente" para um trabalho em forma de código objeto significa todo o código fonte necessário para gerar, instalar, e (para uma obra executável) executar o código objeto e modificar o trabalho, incluindo scripts que controlam estas atividades. No entanto, não inclui as Bibliotecas de Sistema da obra, ou ferramentas de propósito geral ou programas geralmente disponíveis gratuitamente que são usados ??sem modificação para realizar essas atividades, mas que não fazem parte do trabalho. Por exemplo, Fonte Correspondente inclui arquivos de definição de interface associados com arquivos de origem para o trabalho, eo código fonte para bibliotecas compartilhadas e subprogramas dinamicamente ligados que a obra é projetada especificamente para exigir, bem como a comunicação de dados interna ou fluxo de controle entre estes subprogramas e outras partes do trabalho.
+
+O Fonte Correspondente não precisa incluir nada que os usuários podem regerar automaticamente de outras partes da Fonte Correspondente.
+
+O Fonte Correspondente para uma obra em forma de código fonte é que mesmo trabalho.
+
+2. Permissões básicas.
+Todos os direitos concedidos sob esta Licença são concedidos pelo prazo de copyright sobre o Programa, e são irrevogáveis ??desde as condições estabelecidas sejam cumpridas. Esta Licença afirma explicitamente sua permissão ilimitada para executar o Programa não modificado. A saída da execução de uma obra coberta é coberta por esta Licença somente se a saída, dado o seu conteúdo, constitui uma obra coberta. Esta Licença reconhece seus direitos de uso justo ou outro equivalente, como previsto pela lei de direitos autorais.
+
+Você pode fazer, funcionar e propagar obras cobertas que você não transmitir, sem condições, enquanto sua licença permaneça em vigor. Você pode transmitir aos outros obras cobertas com o único propósito de tê-los fazer modificações exclusivamente para você, ou fornecê-lo com instalações para a execução dessas obras, desde que você cumpra com os termos desta Licença na entrega de todo material para que você não controla copyright. Aqueles que assim fazem ou executam obras cobertas por você devem fazer exclusivamente em seu nome, sob sua direção e controle, em termos que os proíbam de fazer quaisquer cópias de seu material com direitos autorais fora do seu relacionamento com você.
+
+Transmitir sob qualquer outra circunstância é somente permitida sob as condições estabelecidas abaixo. Sublicenciamento não é permitido; sessão 10 o faz desnecessário.
+
+3. Proteger os direitos dos usuários Legal De Anti-Fraude.
+Nenhum trabalho coberto será considerado parte de uma medida tecnológica efetiva sob qualquer lei aplicável cumprindo as obrigações nos termos do artigo 11 do copyright WIPO tratado adoptado em 20 de Dezembro de 1996, ou leis similares proibindo ou restringindo a evasão de tais medidas.
+
+Quando você oferecer uma obra coberta, você renuncia a qualquer poder legal para proibir a evasão das medidas tecnológicas para a neutralização medida em que tal é efetuada exercitando os direitos sob esta Licença com relação à obra coberta, e você renuncia qualquer intenção de limitar a operação ou modificação do trabalho como um meio de impor, contra os usuários do trabalho, seu ou de terceiros "direitos legais de proibir fraudes de medidas tecnológicas.
+
+4. Transmitindo cópias fiéis.
+Você pode fornecer cópias fiéis do código-fonte do Programa ao recebê-lo, em qualquer meio, deste que você conspícua e apropriadamente publique em cada cópia um aviso de copyright apropriado; mantenha intactos todos os avisos declarando que esta licença e qualquer termos não-permissiva adicionado no acordo com seção 7 aplicam ao código; manter intactas todas as informações da ausência de qualquer garantia; e dar todos os destinatários uma cópia desta Licença junto com o Programa.
+
+Você pode cobrar qualquer preço ou nenhum preço para cada cópia que você transmita, e você pode oferecer apoio ou proteção de garantia de uma taxa.
+
+5. Modificado transmitir versões de origem.
+Você pode fornecer uma obra baseada no Programa, ou as modificações para produzi-lo a partir do Programa, na forma de código-fonte sob os termos da seção 4, desde que você também se enquadre em todas estas condições:
+
+a) O trabalho deve conter avisos proeminentes afirmando que você modificou, e dando uma data relevante.
+b) O trabalho deve conter avisos proeminentes afirmando que ele é liberado sob esta licença e quaisquer condições agregada sob a seção 7. Este requerimento modifica o requerimento na seção 4 para "manter intactas todas as informações".
+c) Você deve licenciar a obra inteira, como um todo, sob esta licença a qualquer um que entra em posse de uma cópia. Esta Licença poderá se aplicar, juntamente com quaisquer aplicável da seção 7 termos adicionais, para o conjunto da obra, e todas as suas partes, independentemente de como eles são embalados. Esta Licença não da permissão para licenciar a obra de qualquer outra forma, mas não invalida tal permissão se você tenha a recebido separadamente.
+d) Se a obra tem interfaces de usuário interativas, cada um deve mostrar Observações Legais Apropriadas, no entanto, se o Programa tem interfaces interativa que não mostram Observações Legais Apropriadas, sua obra precisa faze-lo.
+Uma compilação de uma obra coberta com outras obras separadas e independentes, que não são por sua natureza extensões da obra coberta, e que não são combinadas com ele, como para formar um programa maior, dentro ou sobre um volume de armazenamento ou distribuição médio, é chamado um "agregado" se a compilação e seus direitos autorais resultantes não são usados ??para limitar o acesso ou direitos legais de compilação dos usuários além do que a obra individual permite. Inclusão de uma obra coberta em um agregado não causa que esta Licença se aplique às outras partes do agregado.
+
+6. Transporte de Non-Source Forms.
+Você pode fornecer uma obra coberta em forma de código objeto sob os termos das secções 4 e 5, desde que você também ofereça o Código Fonte legível por máquina correspondente nos termos desta Licença, em uma das seguintes maneiras:
+
+a) Transmitir o código objeto em, ou incorporados em, um produto físico (incluindo meio de distribuição físico), acompanhado pelo Fonte Correspondente fixado em um meio físico durável costumeiramente utilizado para o intercâmbio de software.
+b) Oferecer o código objeto em, ou incorporados em, um produto físico (incluindo meio de distribuição físico), acompanhado por uma oferta escrita, válida por pelo menos três anos e válida enquanto você ofereça peças de reposição ou suporte ao cliente para que modelo do produto, para dar qualquer um que possui o código objeto ou (1) uma cópia do Fonte Correspondente por todo o software no produto que está coberto por esta Licença, em um meio físico durável regularmente utilizado para troca de software, por um preço não superior ao custo razoável de fisicamente realizar esse transporte de fonte, ou (2) de acesso para copiar o Fonte Correspondente de um servidor de rede sem nenhum custo.
+c) Transmitir cópias individuais do código objeto com uma cópia da oferta escrita para prover o Fonte Correspondente. Esta alternativa é permitida apenas ocasionalmente e não comercialmente, e apenas se você recebeu o código objeto de tal oferta, de acordo com a subseção 6b.
+d) Oferecer o código objeto oferecendo acesso a partir de um local designado (gratuitamente ou mediante pagamento) e oferecer acesso equivalente para o Fonte Correspondente da mesma forma através do mesmo lugar, sem custo adicional. Você não precisa solicitar que os receptores copiem o Fonte Correspondente junto com o código objeto. Se o local para copiar o código objeto é um servidor de rede, o Fonte Correspondente pode estar em um servidor diferente (operado por você ou por terceiros) que suporta instalações equivalente a cópia, desde que você mantenha claro as direções junto ao código objeto dizendo onde encontrar o Fonte Correspondente. Independentemente de qual servidor hospeda o Fonte Correspondente, você remanesce obrigado em assegurar que ele está disponível por tanto tempo quanto necessário para satisfazer esses requisitos.
+e) Transmitir o código objeto utilizando peer-to-peer de transmissão, desde que você informe outros pontos onde o código objeto eo Fonte Correspondente da obra estão sendo oferecidos ao público em geral sem custos sob a subseção 6d.
+Uma parcela separável do código objeto, cujo código fonte é excluído do Fonte Correspondente como uma Biblioteca de Sistema, não precisa ser incluído na transmissão da obra em código objeto.
+
+Um "Produto Usuário" é um (1) um "produto de consumo", que significa qualquer propriedade pessoal tangível que é normalmente usada para pessoal, familiar ou para fins domésticos, ou (2) qualquer coisa projetada ou vendida para incorporação em uma moradia. Para determinar se um produto é um produto de consumo, os casos duvidosos serão resolvidos em favor de cobertura. Para um produto em particular recebido por um usuário em particular, "normalmente usado" se refere a um uso típico ou comum dessa classe de produto, independentemente do status do usuário em particular ou da maneira em que o usuário particular o usou realmente, ou espera ou Espera-se que use o produto. Um produto é um produto de consumo, independentemente de o produto tem uso substancialmente comercial, industrial ou não-consumidores, a menos que tais usos representarem a única maneira significativa do uso do produto.
+
+"Informações de Instalação" para um Produto de Usuário significa qualquer método, procedimentos, chaves de autorização, ou outras informações necessárias para instalar e executar versões modificadas de uma obra coberta neste Produto de Usuário de uma versão modificada do seu Fonte Correspondente. A informação deve ser suficiente para garantir que a continuação do funcionamento do código objeto modificado em nenhum caso é prevenido ou interferido somente porque uma modificação tenha sido feita.
+
+Se você transmitir uma obra em código objeto sob esta sessão, ou com, ou especificamente para uso em, um Produto de Usuário, ea transferência ocorre como parte de uma transação em que o direito de posse e uso do produto do usuário é transferido para o receptor em perpetuidade ou por um período fixo (independentemente de como a transação é caracterizada), o Fonte Correspondente oferecido sob esta sessão deve ser acompanhada pela Informação de Instalação. Mas esta exigência não se aplica se nem você nem qualquer terceiro retiverem a habilidade de instalar o código objeto modificado no produto do usuário (por exemplo, o trabalho foi instalado na ROM).
+
+A exigência de apresentação de Informações de instalação não incluir a exigência de continuar a prestar serviço de suporte, garantia, ou atualizações para uma obra que tenha sido modificado ou instalado pelo destinatário, ou para o Produto do Usuário em que ele foi modificado ou instalado. Acesso a uma rede pode ser negado quando a modificação própria afeta materialmente e adversamente a operação da rede ou viola as regras e protocolos para a comunicação através da rede.
+
+Fonte Correspondente oferecido, eo manual de instalação fornecido, de acordo com esta seção deve estar em formato publicamente documentado (e com uma implementação disponível para o público em forma de código fonte), e não devem requerer senhas especiais ou chaves para desempacotar, ler ou cópia.
+
+7. Termos Adicionais.
+"Permissões Adicionais" são termos que suplementam os termos desta Licença fazendo exceções de um ou mais de suas condições. Permissões adicionais que são aplicáveis ??ao Programa por inteiro serão tratadas como se fossem incluídas nesta licença, na medida em que eles são válidos sob a lei aplicável. Se permissões adicionais se aplicam apenas a parte do Programa, essa parte pode ser usada separadamente sob estas permissões, porém o Programa inteiro permanece governado por esta Licença sem considerar permissões adicionais.
+
+Quando você transmitir uma cópia de uma obra coberta, você pode, a sua opção de remover qualquer permissão adicional dessa cópia, ou de qualquer parte dela. (Permissões adicionais podem ser escritas para requerer sua própria remoção em certos casos quando você modifica a obra.) Você pode colocar permissões adicionais no material, adicionados por você para uma obra coberta, para o qual você tem ou pode dar permissão de direitos autorais.
+
+Não obstante qualquer disposição desta Licença, para material que adiciona a uma obra coberta, você pode (se autorizado pelos detentores dos direitos autorais do material) suplementar os termos desta Licença com termos:
+
+a) Negando a garantia ou limitando a responsabilidade diferentemente dos termos das seções 15 e 16 desta Licença, ou
+b) Requerendo a preservação de observações legais razoáveis ??especificadas ou de atribuições do autor nesse material ou nas observações Legais Apropriadas indicadas pelos obras que a contêm, ou
+c) Proibir a representação falsa da origem desse material, ou requerendo que versões modificadas de tal material sejam marcadas de maneira razoável como diferentes da versão original, ou
+d) Limitar o uso para fins de publicidade dos nomes dos licenciadores ou dos autores do material; ou
+e) Recusar de conceder direitos sob a lei de marcas para o uso de alguns nomes comerciais, marcas comerciais ou marcas de serviço, ou
+f) Requerendo indenização dos concessores de licenças e autores desse material por qualquer pessoa que transporta o material (ou versões modificadas dele) com suposições contratual de responsabilidade para o destinatário, por qualquer responsabilidade que estas suposições contratuais impuserem diretamente naqueles concessores de licenças e autores.
+Todos os outros não-permissivos termos adicionais são considerados "restrições adicionais", na acepção do artigo 10. Se o Programa como você o recebeu, ou qualquer parte dele, contém uma nota afirmando que ele é governado por esta Licença juntamente com um termo que é mais uma restrição, você pode remover esse termo. Se um documento da licença contiver uma restrição remota mas permite relicenciamento ou oferecer sob esta Licença, você pode adicionar um material da obra coberta governada pelos termos desse documento de licença, desde que a restrição não sobreviva tal relicenciamento ou oferecer.
+
+Se você adicionar termos a obra coberta de acordo com esta seção, você deve colocar, nos arquivos de origem pertinente, uma declaração dos termos adicionais que se aplicam a estes arquivos, ou uma nota indicando onde encontrar os termos aplicáveis.
+
+Termos adicionais, permissivos ou não permissivos, podem ser expressos sob a forma de uma licença escrita separada, ou indicados como exceções; as exigências acima aplicam-se de qualquer maneira.
+
+8. Rescisão.
+Você não pode propagar ou modificar uma obra coberta, exceto conforme expressamente estabelecido nesta Licença. Qualquer outra tentativa de propagar ou modificá-lo é nula, e automaticamente rescindirá seus direitos sob esta Licença (incluindo quaisquer licenças de patentes concedidas no âmbito do terceiro parágrafo da seção 11).
+
+No entanto, se você deixar todos os violação desta Licença, em seguida, a sua licença a partir de um detentor de direitos autorais em particular é reposta (a) provisoriamente, a menos que e até que o detentor dos direitos autorais de forma explícita e, finalmente, termina a sua licença, e (b) em caráter permanente, se o detentor dos direitos autorais não para notificá-lo da violação por parte de alguns meios razoáveis ??antes de decorridos 60 dias após a cessação.
+
+Além disso, a sua licença a partir de um detentor de direitos autorais em particular é restabelecido de forma permanente, se o detentor do copyright notifica sobre a violação por parte de alguns meios razoáveis, esta é a primeira vez que você recebeu auto de infração desta Licença (para qualquer trabalho) de que detentor do direito autoral, e você curar a violação antes de 30 dias após o recebimento da notificação.
+
+Rescisão de seus direitos sob esta seção não a cessação das licenças de partidos que tenham recebido cópias ou direitos de você sob esta Licença. Se os seus direitos têm sido encerrado e não permanentemente reposta, você não se qualificam para receber novas licenças para o mesmo material sob a seção 10.
+
+9. Aceitação Não Requerida para Ter Cópias.
+Você não é obrigado a aceitar esta Licença a fim receber ou funcionar uma cópia do Programa. A propagação subordinada de uma obra coberta que ocorre unicamente como conseqüência do uso de peer-to-peer de transmissão para receber uma cópia do mesmo modo não requer aceitação. No entanto, nada que não seja desta licença concede-lhe a permissão propagar ou modificar qualquer obra coberta. Estas ações infringem direitos autorais se você não aceitar esta Licença. Portanto, modificando ou propagando uma obra coberta, você indica sua aceitação desta Licença para fazê-lo.
+
+10. Licenciamento automático de destinatários Downstream.
+Cada vez que você oferecer uma obra coberta, o receptor automaticamente recebe uma licença dos licenciadores, para executar, modificar e propagar esta obra, sujeito a esta Licença. Você não é responsável em garantir a concordância de terceiros com esta Licença.
+
+Uma "transação de entidade" é um controle de transação de transferência de uma organização, ou substancialmente todos os ativos de um, ou subdivide uma organização, ou consolida organizações. Se propagação de uma obra coberta resulta de uma transação de entidade, cada partido daquela transação que recebe uma cópia da obra também recebe qualquer licença para o trabalho anterior que o partido tinha ou pode dar sob o parágrafo anterior, além de um direito de posse da Fonte Correspondente da obra do antecessor de juros, se o predecessor tem ou pode obtê-lo com os esforços razoáveis.
+
+Você não poderá impor quaisquer restrições adicionais ao exercício do direitos concebidos ou afirmados sob esta Licença. Por exemplo, você não pode impor uma taxa de licença, royalty, ou outro encargo para o exercício dos direitos concedidos sob esta Licença, e você não pode iniciar ações legais (incluindo declarações cruzadas ou reconvenção em uma ação judicial) alegando que qualquer reivindicação de patente é violado por fazer, usar, vender, oferecer para venda ou importando o Programa ou qualquer parte dele.
+
+11. Patentes.
+A "contribuição" é um detentor de direitos autorais que autoriza o uso sob esta Licença do Programa, ou um trabalho em que o programa é baseado. A obra assim licenciada é chamada de "versão do contribuidor" daquele contribuidor.
+
+Um contribuinte "de pedidos de patentes essenciais" são todas as declarações de patentes de propriedade ou controladas pelo contribuinte, se já adquirida ou adquirida daqui por diante, que seria violado por alguma forma, permitido por esta Licença, de fazer, usar ou vender a versão do contribuinte, mas não incluem as declarações que poderiam infringir somente como conseqüência de modificações futuras da versão do contribuidor. Para os fins desta definição, "controle" inclui o direito de conceder patentes de sublicenças de maneira consistente com os requisitos desta licença.
+
+Cada contribuidor te concede uma licença não exclusiva, mundial, a licença de patente livre de royalties sob a alegação do contribuinte de patentes essenciais, para fazer, usar, vender, oferecer para venda, importação e qualquer forma executar, modificar e propagar o conteúdo da versão do contribuidor.
+
+Em três parágrafos seguintes, uma "licença de patente" é qualquer acordo expresso ou compromisso, no entanto denominados, para não forçar a patente (como uma autorização expressa para a prática de uma patente ou promessa de não processar por violação de patente). "Conceder" tal licença de patente a um grupo significa fazer tal acordo ou compromisso não para forçar a patente contra o partido.
+
+Se você oferecer uma obra coberta, conscientemente contanto com uma licença de patente, eo Fonte Correspondente da obra não está disponível para qualquer um copiar, de forma gratuita e sob os termos desta Licença, através de um servidor de rede público ou outros facilmente acessível significa, então você deve (1) fazer o Fonte Correspondente ser tão disponível, ou (2) providenciar a privar-se do benefício da licença de patente para este trabalho em particular, ou (3) organizar, de forma consistente com a condições desta Licença, para estender a licença de patente para os destinatários a jusante. "Conscientemente Contando" significa que você tem conhecimento real, mas para a licença de patente, seu fornecimento da obra coberta em um país, ou utilizar o seu destinatário da obra coberta em um país, poderia infringir uma ou mais patentes identificáveis ??nesse país que você têm razões para acreditar que são válidas.
+
+Se, nos termos do ou em conexão com uma única transação ou arranjo, você transmitir ou propagar obtendo de uma obra coberta e concede uma licença de patente para algumas das partes receberam a obra coberta que os autoriza a utilizar, propagar, modificar ou transmitir uma cópia específica da obra coberta, então a licença de patente você que concede é estendida automaticamente a todos os destinatários da obra coberta e trabalhos baseados nele.
+
+A licença de patente é "discriminatória" se ela não incluir no âmbito de sua cobertura, proíbe o exercício de, ou está condicionada ao não exercício de um ou mais dos direitos de que são especificamente concedidos sob esta Licença. Você não pode oferecer uma obra coberta se você é um partido de um acordo com um terceiro que está no negócio de distribuição de software, sob o qual você faz o pagamento a terceiros com base na extensão de sua atividade de transmitir o trabalho, e em que as subvenções de terceiros, a qualquer das partes, que receberia a obra coberta de você, uma licença de patente discriminatória (a) em conexão com as cópias da obra coberta transmitida por você (ou cópias feitas daquelas cópias), ou ( b) principalmente para e em conexão com produtos específicos ou compilações que contêm a obra coberta, a menos que você que entrou em acordo, ou que a licença de patente foi concedida, antes de 28 de março de 2007.
+
+Nada nesta Licença deverá ser interpretado como exclusão ou limitação de qualquer licença implícita ou outras defesas de infração que podem de outra forma disponível para você sob a lei de patentes aplicável.
+
+12. No Surrender of Freedom Outros.
+Se as condições forem impostas a você (por ordem judicial, acordo ou outra forma) que contradigam as condições desta Licença, elas não o livram das condições desta Licença. Se você não pode oferecer uma obra coberta, de modo a satisfazer simultaneamente suas obrigações sob esta licença e quaisquer outras obrigações pertinentes, então como conseqüência você não pode transmiti-la em tudo. Por exemplo, se você concorda com os termos que te obrigam em cobrar dinheiro por continuar oferecendo aqueles a quem você oferece o Programa, a única maneira que você pode satisfazer ambos termos e Licença seria a de desistir completamente de oferecer o Programa.
+
+13. Uso com a Licença Pública GNU Affero General.
+Não obstante qualquer disposição desta Licença, você tem permissão para unir ou combinar qualquer obra coberta com uma obra licenciada sob a versão 3 da GNU Affero General Public License em uma única obra, e fornecer a obra resultante. Os termos desta licença continuarão a aplicar-se a parte que é a obra coberta, mas as exigências especiais do GNU Affero General Public License, seção 13, a respeito de interação através de uma rede se aplicarão à combinação como tal.
+
+14. Versões revisadas desta Licença.
+A Free Software Foundation pode publicar revisões e / ou novas versões da Licença Pública Geral GNU de tempos em tempos. Estas novas versões serão similares em espírito à versão atual, mas podem diferir em detalhes que resolvem novos problemas ou preocupações.
+
+Cada versão recebe um número de versão distinto. Se o Programa especificar que certa versão numerada da Licença Pública Geral GNU "ou qualquer versão posterior" se aplica a ele, você tem a opção de seguir os termos e condições tanto daquela versão numerada ou de qualquer versão posterior publicada pela Free Software Foundation fundação. Se o programa não especifica um número de versão da Licença Pública Geral GNU, você pode escolher qualquer versão já publicada pela Free Software Foundation.
+
+Se o Programa especificar que um procurador pode decidir quais versões futuras Licença Pública Geral GNU podem ser utilizados, a afirmação pública do procurador de aceitação de uma versão permanentemente autoriza você a escolher essa versão para o Programa.
+
+Versões posteriores licença pode dar a você permissões adicionais ou diferentes. No entanto, nenhuma obrigação adicional será imposta sobre o autor ou detentor dos direitos autorais, como resultado de sua escolha para seguir uma versão posterior.
+
+15. Isenção de Garantia.
+NÃO HÁ NENHUMA GARANTIA PARA O PROGRAMA, NO LIMITE PERMITIDO POR LEI. EXCETO QUANDO INDICADO POR ESCRITO OS DETENTORES DOS DIREITOS AUTORAIS E / OU OUTRAS PARTES FORNECER O PROGRAMA "COMO ESTÁ" SEM GARANTIA DE QUALQUER TIPO, EXPRESSA OU IMPLÍCITA, INCLUINDO, SEM LIMITAÇÃO, AS GARANTIAS DE COMERCIALIZAÇÃO E ADEQUAÇÃO PARA UM PROPÓSITO PARTICULAR . O RISCO TOTAL COM A QUALIDADE E DESEMPENHO DO PROGRAMA ESTÁ COM VOCÊ. SE O PROGRAMA APRESENTAR DEFEITO, VOCÊ ASSUME O CUSTO DE TODOS OS SERVIÇOS, REPAROS E CORREÇÕES.
+
+16. Limitação de Responsabilidade.
+EM HIPÓTESE ALGUMA A NÃO SER EXIGIDO PELA LEI APLICÁVEL OU ACORDO ESCRITO qualquer detentor, OU QUALQUER OUTRA PARTE QUE MODIFICA E / OU OFERECE O PROGRAMA COMO PERMITIDO ACIMA, SERÃO RESPONSÁVEIS POR DANOS, INCLUINDO QUALQUER GERAL, ESPECIAL, INCIDENTAL OU CONSEQÜENTE DANOS DECORRENTES DO USO OU A IMPOSSIBILIDADE DE UTILIZAR O PROGRAMA (INCLUINDO, MAS NÃO LIMITADO A PERDA DE DADOS OU DADOS EXACTOS OU PERDAS SUSTENTADO POR VOCÊ OU TERCEIROS OU FALHAS DO PROGRAMA PARA OPERAR COM QUALQUER OUTROS PROGRAMAS), MESMO SE TITULAR OU OUTRA PARTE TENHA SIDO AVISADO DA POSSIBILIDADE DE TAIS DANOS.
+
+17. Interpretação dos artigos 15 e 16.
+Se a exoneração de garantia e limitação de responsabilidade fornecida acima não pode ser dado efeito legal local de acordo com seus termos, cortes de análise deverão aplicar a lei local que mais se aproxima de uma renúncia absoluta de toda a responsabilidade civil em relação ao Programa, a não ser uma garantia ou assunção da responsabilidade acompanharem uma cópia do Programa, em troca de uma taxa.
+
+18. Link para a página de créditos deve ser bem visível em cada página do site, incluindo páginas altera.
+
+19. O software vem como é, não há nenhuma garantia. Plugins e injeções também são marcadas como extensões de software de terceiros e não tem nada a ver com relases oficial.
+
+20. A licença pode mudar a qualquer momento, mesmo sem notificação.
+
+21. Quaisquer alterações no sistema API não são permitidas!
+
+22. Obtenção de lucros em qualquer tipo de este software não é permitido! Excluindo o lucro do servidor, como sistema de SMS Shop, mas incluindo extenstions a esta AAC, salvo acordo desenvolvedores oficiais.
+
+23. Ao utilizar este software você aceita esta licença e os termos e condições, esta licença automaticamente abrange todos os arquivos (que é incluir neste projeto, não bibliotecas externas) e não há necessidade de incluir comentário topo da licença.
